@@ -15,3 +15,5 @@ We will examine the following questions for the year 2019 and observe how the ma
 ## Answers
 
 ![alt text](Answers.png)
+
+# AZURE SYNAPSE INGESTION
