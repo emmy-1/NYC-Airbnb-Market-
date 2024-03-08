@@ -12,7 +12,6 @@ We will examine the following questions for the year 2019 and observe how the ma
 4. Combine the new variables into one DataFrame called review_dates with four columns in the following order: 
    first_reviewed, last_reviewed,    nb_private_rooms, and avg_price.
 5. What has change between 2019 and 2023 in terms of prices, room type and any other information
-
 ## Answers
 
-                     ![alt text](Answers.png)
+![alt text](Answers.png)
