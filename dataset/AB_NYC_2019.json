@@ -1,10 +1,6 @@
 {
 	"name": "AB_NYC_2019",
 	"properties": {
-		"linkedServiceName": {
-			"referenceName": "HTTP LinkedService 3",
-			"type": "LinkedServiceReference"
-		},
 		"annotations": [],
 		"type": "DelimitedText",
 		"typeProperties": {
