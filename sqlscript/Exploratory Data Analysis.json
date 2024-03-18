@@ -1,0 +1,18 @@
+{
+	"name": "Exploratory Data Analysis",
+	"properties": {
+		"description": "Exploratory Data Analysis (EDA) is the single most important task to conduct at the beginning of every data science project.",
+		"content": {
+			"query": "/*Exploratory Data Analysis (EDA) is the single \nmost important task to conduct at the beginning of every data science project.*/\n\nSelect\n     TOP(10) [Organisation Name], /*-- Name of the Organisation*/\n     [Town/City],/*The City or town they are located*/\n     [County], /*County they are located in*/\n     [Type & Rating],/* Type and rating of sponsors*/\n     [Route] /*Type of route visa offered*/\nfrom Uksponsor.sponsors\n\nSelect DISTINCT [Type & Rating] from Uksponsor.sponsors\n\n\n/*Number of missing Values per columns\nLarge proportion of my missing \nvalues are in the county column\n*/\n\nSELECT \n    COUNT(*) AS num_missing_values\n    FROM Uksponsor.sponsors\nWHERE County IS NULL;\n\nSELECT COUNT(*) AS num_missing_values\n    FROM Uksponsor.sponsors\nWHERE [Route] IS NULL;\n\n\nSELECT COUNT(*) AS num_missing_values\n    FROM Uksponsor.sponsors\nWHERE [Type & Rating] IS NULL;\n\n\nSELECT COUNT(*) AS num_missing_values\n    FROM Uksponsor.sponsors\nWHERE [Town/City] IS NULL;\n\n\n\n/* Checking for duplicate values*/\n\nSELECT [Organisation Name], COUNT(*) as count\nFROM Uksponsor.sponsors\nGROUP BY [Organisation Name]\nHAVING COUNT(*) > 1;\n/* Most of compaines appear more than once, my hypotesis is that maybe a company has registerd to offer\ndifferent kind of visas. for example one company may be offering both skilled worker routes and another type of visa.\n\nUpon further investigation i was correct. for example 10 Europe Limited offers a skilled woker visa and \nGlobal Business Mobility: Senior or Specialist Worker visa Route. */\n\nselect [Organisation Name], [Town/City], [County],[Type & Rating], [Route]\nfrom Uksponsor.sponsors\nWHERE [Organisation Name] = '10 Europe Limited'\n\n\n/*How Many Records are in this dataset*/\n/* As of 19th February about 103,255 companies have registred for license to sponsor workers*/\nSelect \n    COUNT(*) as total_number_of_companies\nfrom Uksponsor.sponsors\n\n\n\n/* What are the distinct cities and how many visa are offered  */\nSelect \nDISTINCT [Town/City], COUNT([Route]) as Total_VisaRoute\nfrom Uksponsor.sponsors\nGROUP BY [Town/City] \nORDER BY Total_VisaRoute DESC\n\n/* What are the distinct Route and how frequently do they appear */\nSelect\n    DISTINCT[Route], Count(*) as countno\n    from Uksponsor.sponsors\nGROUP BY [Route]\nORDER BY countno DESC\n\n\n/* What are the distinct County and how frequently do they appear  */\nSelect\n    DISTINCT[County], Count(*) as countno\n    from Uksponsor.sponsors\nGROUP BY [County]\nORDER BY countno DESC\n\n/* What are the distinct county and how many visa are offered  */\nSelect \nDISTINCT [County], COUNT([Route]) as Total_VisaRoute\nfrom Uksponsor.sponsors\nGROUP BY [County] \nORDER BY Total_VisaRoute DESC\n\n\n/* What are the distinct Type Rating*/\nSelect DISTINCT [Type & Rating],Count(*) as countno\nfrom Uksponsor.sponsors\nGROUP BY [Type & Rating]\nORDER BY countno DESC\n\n\n\n\nSELECT * FROM Uksponsor.sponsors\nWHERE [Town/City] = 'London' and [Route] = 'Skilled Worker'",
+			"metadata": {
+				"language": "sql"
+			},
+			"currentConnection": {
+				"databaseName": "LicensedSponsors",
+				"poolName": "Built-in"
+			},
+			"resultLimit": -1
+		},
+		"type": "SqlQuery"
+	}
+}

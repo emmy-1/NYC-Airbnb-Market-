@@ -1,0 +1,18 @@
+{
+	"name": "New York Airbnb",
+	"properties": {
+		"description": "New York Airbnb in 2019.",
+		"content": {
+			"query": "CREATE DATABASE NewYork_Airbnb\n     COLLATE Latin1_General_100_BIN2_UTF8;\nGO\n\nUSE NewYork_Airbnb;\nGO\n/* Create a password for credential */\nCREATE MASTER KEY ENCRYPTION BY PASSWORD = 'Nigeria@10'; -- 'Add a encryption key'\n\nCREATE DATABASE SCOPED CREDENTIAL Manageid\nWITH\n    IDENTITY='Managed Identity'; -- 'Using my Azure Managed indentity'\nGO\n\n/* CREATE EXTERNAL DATASOURCE */\nCREATE EXTERNAL DATA SOURCE Airbnb\nWITH (\n    LOCATION = 'abfss://ffs@datagen2db.dfs.core.windows.net',\n    CREDENTIAL = Manageid\n);\nGO\n/* CREATE AN EXTERNAL FILE FORMAT */\nCREATE EXTERNAL FILE FORMAT CsvFormat\n    WITH (\n        FORMAT_TYPE = DELIMITEDTEXT,\n        FORMAT_OPTIONS (\n            FIELD_TERMINATOR = ',',\n\t\t\tFIRST_ROW = 2,\n            STRING_DELIMITER = '\"'\n        )\n    );\nGO\n\n/* CREATE AN EXTERNAL TABLE FOR AIRBNB 2019*/\n\nCREATE EXTERNAL TABLE dbo.[2019] (\n\t[id] bigint,\n\t[name] nvarchar(4000),\n\t[host_id] bigint,\n\t[host_name] nvarchar(4000),\n\t[neighbourhood_group] nvarchar(4000),\n\t[neighbourhood] nvarchar(4000),\n\t[latitude] float,\n\t[longitude] float,\n\t[room_type] nvarchar(4000),\n\t[price] bigint,\n\t[minimum_nights] bigint,\n\t[number_of_reviews] bigint,\n\t[last_review] date,\n\t[reviews_per_month] float,\n\t[calculated_host_listings_count] bigint,\n\t[availability_365] bigint\n\t)\n\tWITH (\n\tLOCATION = 'NewYork Airbnb/2019.csv',\n\tDATA_SOURCE = [Airbnb],\n\tFILE_FORMAT = [CsvFormat]\n\t)\nGO\n/* CREATE AN EXTERNAL TABLE FOR AIRBNB 2023*/\nCREATE EXTERNAL TABLE [dbo].[2023] (\n\t[id] bigint,\n\t[name] nvarchar(4000),\n\t[host_id] bigint,\n\t[host_name] nvarchar(4000),\n\t[neighbourhood_group] nvarchar(4000),\n\t[neighbourhood] nvarchar(4000),\n\t[latitude] float,\n\t[longitude] float,\n\t[room_type] nvarchar(4000),\n\t[price] bigint,\n\t[minimum_nights] bigint,\n\t[number_of_reviews] bigint,\n\t[last_review] date,\n\t[reviews_per_month] float,\n\t[calculated_host_listings_count] bigint,\n\t[availability_365] bigint,\n\t[number_of_reviews_ltm] bigint\n\t/*[license] nvarchar(4000)*/\n\t)\n\tWITH (\n\tLOCATION = 'NewYork Airbnb/2023.csv',\n\tDATA_SOURCE = [Airbnb],\n\tFILE_FORMAT = [CsvFormat]\n\t)\nGO\n\nCREATE EXTERNAL TABLE [dbo].[2024] (\n\t[id] bigint,\n\t[name] nvarchar(4000),\n\t[host_id] bigint,\n\t[host_name] nvarchar(4000),\n\t[neighbourhood_group] nvarchar(4000),\n\t[neighbourhood] nvarchar(4000),\n\t[latitude] float,\n\t[longitude] float,\n\t[room_type] nvarchar(4000),\n\t[price] float,\n\t[minimum_nights] bigint,\n\t[number_of_reviews] bigint,\n\t[last_review] date,\n\t[reviews_per_month] float,\n\t[calculated_host_listings_count] bigint,\n\t[availability_365] bigint,\n\t[number_of_reviews_ltm] bigint,\n\t[license] nvarchar(4000),\n\t[rating] nvarchar(4000),\n\t[bedrooms] nvarchar(4000),\n\t[beds] bigint,\n\t[baths] nvarchar(4000)\n\t)\n\tWITH (\n\tLOCATION = 'NewYork Airbnb/2024.csv',\n\tDATA_SOURCE = [Airbnb],\n\tFILE_FORMAT = [CsvFormat]\n\t)\nGO\n\nDROP EXTERNAL TABLE [dbo].[2019]",
+			"metadata": {
+				"language": "sql"
+			},
+			"currentConnection": {
+				"databaseName": "NewYork_Airbnb",
+				"poolName": "Built-in"
+			},
+			"resultLimit": 5000
+		},
+		"type": "SqlQuery"
+	}
+}
