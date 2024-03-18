@@ -1,6 +1,7 @@
 {
 	"name": "AB_NYC_2024",
 	"properties": {
+		"description": "New York Airbnb Dataset.",
 		"linkedServiceName": {
 			"referenceName": "Http Link Service",
 			"type": "LinkedServiceReference"
