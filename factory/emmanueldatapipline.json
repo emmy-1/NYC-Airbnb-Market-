@@ -1,9 +1,0 @@
-{
-	"name": "emmanueldatapipline",
-	"location": "uksouth",
-	"identity": {
-		"type": "SystemAssigned",
-		"principalId": "6f21d29d-c0b6-4ad7-be0b-aae9d562f623",
-		"tenantId": "c0c7f8a2-21aa-4bf3-bb2f-6b97e3402e3d"
-	}
-}
