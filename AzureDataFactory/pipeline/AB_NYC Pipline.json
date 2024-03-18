@@ -2,17 +2,6 @@
 	"name": "AB_NYC Pipline",
 	"properties": {
 		"description": "This Datapipline Extracts, Transforms and load the airbnb pipline from 2019 to 2024.",
-		"activities": [
-			{
-				"name": "Wait1",
-				"type": "Wait",
-				"dependsOn": [],
-				"userProperties": [],
-				"typeProperties": {
-					"waitTimeInSeconds": 1
-				}
-			}
-		],
 		"annotations": [],
 		"lastPublishTime": "2024-03-18T23:34:49Z"
 	},
