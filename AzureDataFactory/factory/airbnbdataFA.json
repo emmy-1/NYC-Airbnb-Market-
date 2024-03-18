@@ -1,0 +1,9 @@
+{
+	"name": "airbnbdataFA",
+	"location": "uksouth",
+	"identity": {
+		"type": "SystemAssigned",
+		"principalId": "addbf668-ec56-4b1f-ae18-151eadd9bbff",
+		"tenantId": "c0c7f8a2-21aa-4bf3-bb2f-6b97e3402e3d"
+	}
+}
