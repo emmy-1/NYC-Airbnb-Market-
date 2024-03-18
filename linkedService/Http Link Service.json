@@ -8,6 +8,10 @@
 			"url": "https://raw.githubusercontent.com/emmy-1/NYC-Airbnb-Market-/main/Airbnb/Transformed%20Data/_AB_NYC_2024.csv",
 			"enableServerCertificateValidation": true,
 			"authenticationType": "Anonymous"
+		},
+		"connectVia": {
+			"referenceName": "integrationRuntime1",
+			"type": "IntegrationRuntimeReference"
 		}
 	}
 }
