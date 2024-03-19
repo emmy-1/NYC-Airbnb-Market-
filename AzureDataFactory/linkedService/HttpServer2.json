@@ -1,0 +1,13 @@
+{
+	"name": "HttpServer2",
+	"properties": {
+		"description": "Link connector for 2023 Airbnb dataset",
+		"annotations": [],
+		"type": "HttpServer",
+		"typeProperties": {
+			"url": "https://raw.githubusercontent.com/emmy-1/NYC-Airbnb-Market-/main/Airbnb/Transformed%20Data/_AB_NYC_2023.csv",
+			"enableServerCertificateValidation": true,
+			"authenticationType": "Anonymous"
+		}
+	}
+}
