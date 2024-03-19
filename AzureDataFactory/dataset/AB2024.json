@@ -1,0 +1,22 @@
+{
+	"name": "AB2024",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "HttpServer2024",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "DelimitedText",
+		"typeProperties": {
+			"location": {
+				"type": "HttpServerLocation"
+			},
+			"columnDelimiter": ",",
+			"escapeChar": "\\",
+			"firstRowAsHeader": true,
+			"nullValue": "Null",
+			"quoteChar": "\""
+		},
+		"schema": []
+	}
+}
