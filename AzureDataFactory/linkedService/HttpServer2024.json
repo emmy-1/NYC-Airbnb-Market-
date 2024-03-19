@@ -1,0 +1,13 @@
+{
+	"name": "HttpServer2024",
+	"properties": {
+		"description": "link service propeties for the AB_NYC_2024 Dataset",
+		"annotations": [],
+		"type": "HttpServer",
+		"typeProperties": {
+			"url": "https://raw.githubusercontent.com/emmy-1/NYC-Airbnb-Market-/main/Airbnb/AB_NYC_2024.csv",
+			"enableServerCertificateValidation": true,
+			"authenticationType": "Anonymous"
+		}
+	}
+}
