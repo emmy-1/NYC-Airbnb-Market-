@@ -14,9 +14,9 @@
 				"fileSystem": "ffs"
 			},
 			"columnDelimiter": ",",
-			"rowDelimiter": "\n",
 			"escapeChar": "\\",
 			"firstRowAsHeader": true,
+			"nullValue": "Null",
 			"quoteChar": "\""
 		},
 		"schema": []
