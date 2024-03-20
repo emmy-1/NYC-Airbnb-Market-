@@ -17,7 +17,7 @@
 				"spark.dynamicAllocation.enabled": "false",
 				"spark.dynamicAllocation.minExecutors": "2",
 				"spark.dynamicAllocation.maxExecutors": "2",
-				"spark.autotune.trackingId": "b00059cc-6ea9-4596-8715-7fdec9c44694"
+				"spark.autotune.trackingId": "add00a7a-98bc-4402-8d2f-ff699bdc4386"
 			}
 		},
 		"metadata": {
@@ -81,26 +81,6 @@
 					"collapsed": false
 				},
 				"source": [
-					"Invalid_rows = df.filter(~df['host_id'].rlike('^[0-9]*$'))\r\n",
-					"Invalid_rows.count()"
-				],
-				"execution_count": 32
-			},
-			{
-				"cell_type": "code",
-				"metadata": {
-					"jupyter": {
-						"source_hidden": false,
-						"outputs_hidden": false
-					},
-					"nteract": {
-						"transient": {
-							"deleting": false
-						}
-					},
-					"collapsed": false
-				},
-				"source": [
 					"from pyspark.sql.types import *\r\n",
 					"from pyspark.sql.functions import *\r\n",
 					"\r\n",
@@ -130,7 +110,7 @@
 					"display(NeyWork2024.limit(30))\r\n",
 					""
 				],
-				"execution_count": 29
+				"execution_count": 55
 			},
 			{
 				"cell_type": "code",
@@ -170,7 +150,7 @@
 					"Invalid_rows = NeyWork2024.filter(~NeyWork2024['host_id'].rlike('^[0-9]*$'))\r\n",
 					"display(Invalid_rows)"
 				],
-				"execution_count": 49
+				"execution_count": 56
 			},
 			{
 				"cell_type": "code",
@@ -190,7 +170,7 @@
 					"db_2024= NeyWork2024.filter(NeyWork2024['host_id'].rlike('^[0-9]*$'))\r\n",
 					"display(db_2024)"
 				],
-				"execution_count": 50
+				"execution_count": 57
 			},
 			{
 				"cell_type": "code",
@@ -208,7 +188,7 @@
 				"source": [
 					"db_2024.createOrReplaceTempView(\"Airbnb2024\")"
 				],
-				"execution_count": 51
+				"execution_count": 58
 			},
 			{
 				"cell_type": "markdown",
@@ -241,7 +221,47 @@
 					"room_with_price_0 = spark.sql(\"Select * from Airbnb2024 where price = '0'\")\r\n",
 					"display(room_with_price_0)"
 				],
-				"execution_count": 54
+				"execution_count": 59
+			},
+			{
+				"cell_type": "code",
+				"metadata": {
+					"jupyter": {
+						"source_hidden": false,
+						"outputs_hidden": false
+					},
+					"nteract": {
+						"transient": {
+							"deleting": false
+						}
+					},
+					"collapsed": false
+				},
+				"source": [
+					"distinct = spark.sql(\"select distinct(host_name) from Airbnb2024 \")\r\n",
+					"display(distinct)"
+				],
+				"execution_count": 64
+			},
+			{
+				"cell_type": "code",
+				"metadata": {
+					"jupyter": {
+						"source_hidden": false,
+						"outputs_hidden": false
+					},
+					"nteract": {
+						"transient": {
+							"deleting": false
+						}
+					},
+					"collapsed": false
+				},
+				"source": [
+					"db_2019 = spark.read.load('abfss://ffs@abdatalake.dfs.core.windows.net/Raw Datasets/2019.csv',format='csv', header=True)\r\n",
+					"display(db_2019)"
+				],
+				"execution_count": 65
 			},
 			{
 				"cell_type": "code",
