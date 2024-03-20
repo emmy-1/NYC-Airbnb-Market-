@@ -17,7 +17,7 @@
 				"spark.dynamicAllocation.enabled": "false",
 				"spark.dynamicAllocation.minExecutors": "2",
 				"spark.dynamicAllocation.maxExecutors": "2",
-				"spark.autotune.trackingId": "290bce61-ab27-4aac-a320-f41aec14e6de"
+				"spark.autotune.trackingId": "809928e3-4906-4b46-863b-57b148f5968a"
 			}
 		},
 		"metadata": {
@@ -149,6 +149,80 @@
 					"display(Invalid_rows)"
 				],
 				"execution_count": 17
+			},
+			{
+				"cell_type": "code",
+				"metadata": {
+					"jupyter": {
+						"source_hidden": false,
+						"outputs_hidden": false
+					},
+					"nteract": {
+						"transient": {
+							"deleting": false
+						}
+					},
+					"collapsed": false
+				},
+				"source": [
+					"Invalid_rows = NeyWork2024.filter(NeyWork2024['host_id'].rlike('^[0-9]*$'))\r\n",
+					"display(Invalid_rows)"
+				],
+				"execution_count": 19
+			},
+			{
+				"cell_type": "code",
+				"metadata": {
+					"jupyter": {
+						"source_hidden": false,
+						"outputs_hidden": false
+					},
+					"nteract": {
+						"transient": {
+							"deleting": false
+						}
+					}
+				},
+				"source": [
+					"df.createOrReplaceTempView(\"Airbnb2024\")\r\n",
+					"\r\n",
+					""
+				],
+				"execution_count": 20
+			},
+			{
+				"cell_type": "markdown",
+				"metadata": {
+					"nteract": {
+						"transient": {
+							"deleting": false
+						}
+					}
+				},
+				"source": [
+					"**Looking into outliers in price**"
+				]
+			},
+			{
+				"cell_type": "code",
+				"metadata": {
+					"jupyter": {
+						"source_hidden": false,
+						"outputs_hidden": false
+					},
+					"nteract": {
+						"transient": {
+							"deleting": false
+						}
+					},
+					"collapsed": false
+				},
+				"source": [
+					"room_with_price_0 = spark.sql(\"Select * from Airbnb2024 \\\r\n",
+					"where price = '0'\")\r\n",
+					"display(room_with_price_0)"
+				],
+				"execution_count": 28
 			},
 			{
 				"cell_type": "code",
