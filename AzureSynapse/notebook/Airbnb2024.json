@@ -17,7 +17,7 @@
 				"spark.dynamicAllocation.enabled": "false",
 				"spark.dynamicAllocation.minExecutors": "2",
 				"spark.dynamicAllocation.maxExecutors": "2",
-				"spark.autotune.trackingId": "f8efe3f9-3441-4d79-91f8-6e52e030c16b"
+				"spark.autotune.trackingId": "50fea57f-c9ee-4031-9bb4-4f11a34b08c2"
 			}
 		},
 		"metadata": {
@@ -110,85 +110,7 @@
 					"display(NeyWork2024.limit(30))\r\n",
 					""
 				],
-				"execution_count": 55
-			},
-			{
-				"cell_type": "code",
-				"metadata": {
-					"jupyter": {
-						"source_hidden": false,
-						"outputs_hidden": false
-					},
-					"nteract": {
-						"transient": {
-							"deleting": false
-						}
-					},
-					"collapsed": false
-				},
-				"source": [
-					"Invalid_rows = NeyWork2024.filter(~NeyWork2024['price'].rlike('^[0-9]*$'))\r\n",
-					"display(Invalid_rows)"
-				],
-				"execution_count": 35
-			},
-			{
-				"cell_type": "code",
-				"metadata": {
-					"jupyter": {
-						"source_hidden": false,
-						"outputs_hidden": false
-					},
-					"nteract": {
-						"transient": {
-							"deleting": false
-						}
-					},
-					"collapsed": false
-				},
-				"source": [
-					"Invalid_rows = NeyWork2024.filter(~NeyWork2024['host_id'].rlike('^[0-9]*$'))\r\n",
-					"display(Invalid_rows)"
-				],
-				"execution_count": 56
-			},
-			{
-				"cell_type": "code",
-				"metadata": {
-					"jupyter": {
-						"source_hidden": false,
-						"outputs_hidden": false
-					},
-					"nteract": {
-						"transient": {
-							"deleting": false
-						}
-					},
-					"collapsed": false
-				},
-				"source": [
-					"db_2024= NeyWork2024.filter(NeyWork2024['host_id'].rlike('^[0-9]*$'))\r\n",
-					"display(db_2024)"
-				],
-				"execution_count": 57
-			},
-			{
-				"cell_type": "code",
-				"metadata": {
-					"jupyter": {
-						"source_hidden": false,
-						"outputs_hidden": false
-					},
-					"nteract": {
-						"transient": {
-							"deleting": false
-						}
-					}
-				},
-				"source": [
-					"db_2024.createOrReplaceTempView(\"Airbnb2024\")"
-				],
-				"execution_count": 58
+				"execution_count": 84
 			},
 			{
 				"cell_type": "markdown",
@@ -200,7 +122,7 @@
 					}
 				},
 				"source": [
-					"**Looking into outliers in price**"
+					"This will return a new DataFrame that only includes the rows where the 'host_id' column consists only of digits."
 				]
 			},
 			{
@@ -218,10 +140,93 @@
 					"collapsed": false
 				},
 				"source": [
-					"room_with_price_0 = spark.sql(\"Select Distinct(room_type) from Airbnb2024\")\r\n",
-					"display(room_with_price_0)"
+					"def filtering (dataset, Column,filter_word):\r\n",
+					"    filterby = dataset.filter(dataset[Column].rlike(filter_word))\r\n",
+					"    return filterby\r\n",
+					"\r\n",
+					"Db2024 = filtering(NeyWork2024, 'host_id','^[0-9]*$' )\r\n",
+					"display(Db2024)"
 				],
-				"execution_count": 74
+				"execution_count": 89
+			},
+			{
+				"cell_type": "markdown",
+				"metadata": {
+					"nteract": {
+						"transient": {
+							"deleting": false
+						}
+					}
+				},
+				"source": [
+					"function is used to create a temporary view of a DataFrame in Spark. "
+				]
+			},
+			{
+				"cell_type": "code",
+				"metadata": {
+					"jupyter": {
+						"source_hidden": false,
+						"outputs_hidden": false
+					},
+					"nteract": {
+						"transient": {
+							"deleting": false
+						}
+					}
+				},
+				"source": [
+					"def CreateSqltb (dataset, name):\r\n",
+					"    return dataset.createOrReplaceTempView(name)\r\n",
+					"CreateSqltb(Db2024, \"Airbnb2024\")"
+				],
+				"execution_count": 90
+			},
+			{
+				"cell_type": "markdown",
+				"metadata": {
+					"nteract": {
+						"transient": {
+							"deleting": false
+						}
+					}
+				},
+				"source": [
+					"**Looking into outliers in price**"
+				]
+			},
+			{
+				"cell_type": "markdown",
+				"metadata": {
+					"nteract": {
+						"transient": {
+							"deleting": false
+						}
+					}
+				},
+				"source": [
+					"Check distinct values in the room_type column. as seen from the distinct we have some unsually columns that seem not to be the 5 major neighbourhood groups in newyork. we will have to drops the rows as they are not useful."
+				]
+			},
+			{
+				"cell_type": "code",
+				"metadata": {
+					"jupyter": {
+						"source_hidden": false,
+						"outputs_hidden": false
+					},
+					"nteract": {
+						"transient": {
+							"deleting": false
+						}
+					},
+					"collapsed": false
+				},
+				"source": [
+					"Select_distinct= spark.sql(\"Select Distinct(room_type) from Airbnb2024\")\r\n",
+					"display(Select_distinct)"
+				],
+				"execution_count": 106
 			},
 			{
 				"cell_type": "code",
@@ -239,9 +244,34 @@
 				},
 				"source": [
 					"distinct = spark.sql(\"SELECT * FROM Airbnb2024 WHERE neighbourhood_group IN ('Manhattan', 'Bronx', 'Brooklyn', 'Staten Island', 'Queens')\")\r\n",
-					"distinct.createOrReplaceTempView(\"Airbnb2024n\")"
+					"CreateSqltb(distinct, \"Airbnb2024\")\r\n",
+					""
 				],
-				"execution_count": 72
+				"execution_count": 102
+			},
+			{
+				"cell_type": "code",
+				"metadata": {
+					"jupyter": {
+						"source_hidden": true,
+						"outputs_hidden": false
+					},
+					"nteract": {
+						"transient": {
+							"deleting": false
+						}
+					},
+					"microsoft": {
+						"language": "sparksql"
+					},
+					"collapsed": false
+				},
+				"source": [
+					"%%sql\r\n",
+					"SELECT * from Airbnb2024\r\n",
+					""
+				],
+				"execution_count": null
 			},
 			{
 				"cell_type": "code",
@@ -259,54 +289,15 @@
 				},
 				"source": [
 					"Rooms = spark.sql(\"SELECT * FROM Airbnb2024n WHERE room_type IN ('Private room', 'Shared room', 'Hotel room', 'Entire home/apt')\")\r\n",
-					"distinct.createOrReplaceTempView(\"Airbnb2024z\")"
+					"distinct.createOrReplaceTempView(\"Airbnb2024\")"
 				],
-				"execution_count": 76
+				"execution_count": 105
 			},
 			{
 				"cell_type": "code",
 				"metadata": {
 					"jupyter": {
 						"source_hidden": false,
-						"outputs_hidden": false
-					},
-					"nteract": {
-						"transient": {
-							"deleting": false
-						}
-					},
-					"collapsed": false
-				},
-				"source": [
-					"cleanrooms = spark.sql(\"Select Distinct(number_of_reviews) from Airbnb2024z\")\r\n",
-					"display(cleanrooms)"
-				],
-				"execution_count": 83
-			},
-			{
-				"cell_type": "code",
-				"metadata": {
-					"jupyter": {
-						"source_hidden": false,
-						"outputs_hidden": false
-					},
-					"nteract": {
-						"transient": {
-							"deleting": false
-						}
-					}
-				},
-				"source": [
-					"Clean = spark.sql(\"Select * from Airbnb2024 where  = '0'\")\r\n",
-					"display(room_with_price_0)"
-				],
-				"execution_count": null
-			},
-			{
-				"cell_type": "code",
-				"metadata": {
-					"jupyter": {
-						"source_hidden": true,
 						"outputs_hidden": false
 					},
 					"nteract": {
@@ -319,24 +310,6 @@
 				"source": [
 					"db_2019 = spark.read.load('abfss://ffs@abdatalake.dfs.core.windows.net/Raw Datasets/2019.csv',format='csv', header=True)\r\n",
 					"display(db_2019)"
-				],
-				"execution_count": null
-			},
-			{
-				"cell_type": "code",
-				"metadata": {
-					"jupyter": {
-						"source_hidden": false,
-						"outputs_hidden": false
-					},
-					"nteract": {
-						"transient": {
-							"deleting": false
-						}
-					}
-				},
-				"source": [
-					""
 				],
 				"execution_count": null
 			}
