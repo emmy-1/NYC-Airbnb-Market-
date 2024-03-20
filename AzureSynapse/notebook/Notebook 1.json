@@ -1,0 +1,134 @@
+{
+	"name": "Notebook 1",
+	"properties": {
+		"nbformat": 4,
+		"nbformat_minor": 2,
+		"bigDataPool": {
+			"referenceName": "Airbnbsparkpool",
+			"type": "BigDataPoolReference"
+		},
+		"sessionProperties": {
+			"driverMemory": "28g",
+			"driverCores": 4,
+			"executorMemory": "28g",
+			"executorCores": 4,
+			"numExecutors": 2,
+			"conf": {
+				"spark.dynamicAllocation.enabled": "false",
+				"spark.dynamicAllocation.minExecutors": "2",
+				"spark.dynamicAllocation.maxExecutors": "2",
+				"spark.autotune.trackingId": "9d358ba4-0df9-4e36-8f4a-d33b7e533d6e"
+			}
+		},
+		"metadata": {
+			"saveOutput": true,
+			"enableDebugMode": false,
+			"kernelspec": {
+				"name": "synapse_pyspark",
+				"display_name": "Synapse PySpark"
+			},
+			"language_info": {
+				"name": "python"
+			},
+			"a365ComputeOptions": {
+				"id": "/subscriptions/2807cfaa-f940-4555-b623-1800da5ab957/resourceGroups/NewYorkAirbnb/providers/Microsoft.Synapse/workspaces/airbnbworkspace/bigDataPools/Airbnbsparkpool",
+				"name": "Airbnbsparkpool",
+				"type": "Spark",
+				"endpoint": "https://airbnbworkspace.dev.azuresynapse.net/livyApi/versions/2019-11-01-preview/sparkPools/Airbnbsparkpool",
+				"auth": {
+					"type": "AAD",
+					"authResource": "https://dev.azuresynapse.net"
+				},
+				"sparkVersion": "3.4",
+				"nodeCount": 3,
+				"cores": 4,
+				"memory": 28,
+				"automaticScaleJobs": false
+			},
+			"sessionKeepAliveTimeout": 30
+		},
+		"cells": [
+			{
+				"cell_type": "code",
+				"metadata": {
+					"microsoft": {
+						"language": "python"
+					},
+					"collapsed": false
+				},
+				"source": [
+					"%%pyspark\r\n",
+					"df = spark.read.load('abfss://ffs@abdatalake.dfs.core.windows.net/Raw Datasets/2024.csv', format='csv'\r\n",
+					"## If header exists uncomment line below\r\n",
+					", header=True\r\n",
+					")\r\n",
+					"display(df.limit(10))"
+				],
+				"execution_count": 14
+			},
+			{
+				"cell_type": "code",
+				"metadata": {
+					"jupyter": {
+						"source_hidden": false,
+						"outputs_hidden": false
+					},
+					"nteract": {
+						"transient": {
+							"deleting": false
+						}
+					},
+					"collapsed": false
+				},
+				"source": [
+					"from pyspark.sql.types import *\r\n",
+					"from pyspark.sql.functions import *\r\n",
+					"\r\n",
+					"nySchema = StructType([\r\n",
+					"    StructField(\"id\", IntegerType()),\r\n",
+					"    StructField(\"name\", StringType()),\r\n",
+					"    StructField(\"description\", StringType()),\r\n",
+					"    StructField(\"host_id\", StringType()),\r\n",
+					"    StructField(\"host_name\", StringType()),\r\n",
+					"    StructField(\"neighbourhood\", StringType()),\r\n",
+					"    StructField(\"neighbourhood_group\", StringType()),\r\n",
+					"    StructField(\"latitude\", FloatType()),\r\n",
+					"    StructField(\"longitude\", FloatType()),\r\n",
+					"    StructField(\"property_type\", StringType()),\r\n",
+					"    StructField(\"price\", IntegerType()),\r\n",
+					"    StructField(\"minimum_nights\", IntegerType()),\r\n",
+					"    StructField(\"number_of_reviews\", IntegerType()),\r\n",
+					"    StructField(\"last_review\", StringType()),\r\n",
+					"    StructField(\"calculated_host_listings_count\", IntegerType()),\r\n",
+					"    StructField(\"availability_365\", IntegerType())\r\n",
+					"    ])\r\n",
+					"\r\n",
+					"NeyWork2024 = spark.read.load('abfss://ffs@abdatalake.dfs.core.windows.net/Raw Datasets/2024.csv',\r\n",
+					"format='csv',\r\n",
+					"schema=nySchema,\r\n",
+					"header=False)\r\n",
+					"display(NeyWork2024)"
+				],
+				"execution_count": 15
+			},
+			{
+				"cell_type": "code",
+				"metadata": {
+					"jupyter": {
+						"source_hidden": false,
+						"outputs_hidden": false
+					},
+					"nteract": {
+						"transient": {
+							"deleting": false
+						}
+					}
+				},
+				"source": [
+					""
+				],
+				"execution_count": null
+			}
+		]
+	}
+}
