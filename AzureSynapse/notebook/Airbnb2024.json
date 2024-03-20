@@ -17,7 +17,7 @@
 				"spark.dynamicAllocation.enabled": "false",
 				"spark.dynamicAllocation.minExecutors": "2",
 				"spark.dynamicAllocation.maxExecutors": "2",
-				"spark.autotune.trackingId": "809928e3-4906-4b46-863b-57b148f5968a"
+				"spark.autotune.trackingId": "b00059cc-6ea9-4596-8715-7fdec9c44694"
 			}
 		},
 		"metadata": {
@@ -64,7 +64,7 @@
 					")\r\n",
 					"display(df.limit(10))"
 				],
-				"execution_count": 8
+				"execution_count": 30
 			},
 			{
 				"cell_type": "code",
@@ -77,12 +77,14 @@
 						"transient": {
 							"deleting": false
 						}
-					}
+					},
+					"collapsed": false
 				},
 				"source": [
-					""
+					"Invalid_rows = df.filter(~df['host_id'].rlike('^[0-9]*$'))\r\n",
+					"Invalid_rows.count()"
 				],
-				"execution_count": null
+				"execution_count": 32
 			},
 			{
 				"cell_type": "code",
@@ -128,7 +130,27 @@
 					"display(NeyWork2024.limit(30))\r\n",
 					""
 				],
-				"execution_count": 12
+				"execution_count": 29
+			},
+			{
+				"cell_type": "code",
+				"metadata": {
+					"jupyter": {
+						"source_hidden": false,
+						"outputs_hidden": false
+					},
+					"nteract": {
+						"transient": {
+							"deleting": false
+						}
+					},
+					"collapsed": false
+				},
+				"source": [
+					"Invalid_rows = NeyWork2024.filter(~NeyWork2024['price'].rlike('^[0-9]*$'))\r\n",
+					"display(Invalid_rows)"
+				],
+				"execution_count": 35
 			},
 			{
 				"cell_type": "code",
@@ -148,7 +170,7 @@
 					"Invalid_rows = NeyWork2024.filter(~NeyWork2024['host_id'].rlike('^[0-9]*$'))\r\n",
 					"display(Invalid_rows)"
 				],
-				"execution_count": 17
+				"execution_count": 49
 			},
 			{
 				"cell_type": "code",
@@ -165,10 +187,10 @@
 					"collapsed": false
 				},
 				"source": [
-					"Invalid_rows = NeyWork2024.filter(NeyWork2024['host_id'].rlike('^[0-9]*$'))\r\n",
-					"display(Invalid_rows)"
+					"db_2024= NeyWork2024.filter(NeyWork2024['host_id'].rlike('^[0-9]*$'))\r\n",
+					"display(db_2024)"
 				],
-				"execution_count": 19
+				"execution_count": 50
 			},
 			{
 				"cell_type": "code",
@@ -184,11 +206,9 @@
 					}
 				},
 				"source": [
-					"df.createOrReplaceTempView(\"Airbnb2024\")\r\n",
-					"\r\n",
-					""
+					"db_2024.createOrReplaceTempView(\"Airbnb2024\")"
 				],
-				"execution_count": 20
+				"execution_count": 51
 			},
 			{
 				"cell_type": "markdown",
@@ -218,11 +238,10 @@
 					"collapsed": false
 				},
 				"source": [
-					"room_with_price_0 = spark.sql(\"Select * from Airbnb2024 \\\r\n",
-					"where price = '0'\")\r\n",
+					"room_with_price_0 = spark.sql(\"Select * from Airbnb2024 where price = '0'\")\r\n",
 					"display(room_with_price_0)"
 				],
-				"execution_count": 28
+				"execution_count": 54
 			},
 			{
 				"cell_type": "code",
