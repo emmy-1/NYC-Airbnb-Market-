@@ -17,7 +17,7 @@
 				"spark.dynamicAllocation.enabled": "false",
 				"spark.dynamicAllocation.minExecutors": "2",
 				"spark.dynamicAllocation.maxExecutors": "2",
-				"spark.autotune.trackingId": "add00a7a-98bc-4402-8d2f-ff699bdc4386"
+				"spark.autotune.trackingId": "f8efe3f9-3441-4d79-91f8-6e52e030c16b"
 			}
 		},
 		"metadata": {
@@ -218,10 +218,10 @@
 					"collapsed": false
 				},
 				"source": [
-					"room_with_price_0 = spark.sql(\"Select * from Airbnb2024 where price = '0'\")\r\n",
+					"room_with_price_0 = spark.sql(\"Select Distinct(room_type) from Airbnb2024\")\r\n",
 					"display(room_with_price_0)"
 				],
-				"execution_count": 59
+				"execution_count": 74
 			},
 			{
 				"cell_type": "code",
@@ -238,16 +238,75 @@
 					"collapsed": false
 				},
 				"source": [
-					"distinct = spark.sql(\"select distinct(host_name) from Airbnb2024 \")\r\n",
-					"display(distinct)"
+					"distinct = spark.sql(\"SELECT * FROM Airbnb2024 WHERE neighbourhood_group IN ('Manhattan', 'Bronx', 'Brooklyn', 'Staten Island', 'Queens')\")\r\n",
+					"distinct.createOrReplaceTempView(\"Airbnb2024n\")"
 				],
-				"execution_count": 64
+				"execution_count": 72
 			},
 			{
 				"cell_type": "code",
 				"metadata": {
 					"jupyter": {
 						"source_hidden": false,
+						"outputs_hidden": false
+					},
+					"nteract": {
+						"transient": {
+							"deleting": false
+						}
+					},
+					"collapsed": false
+				},
+				"source": [
+					"Rooms = spark.sql(\"SELECT * FROM Airbnb2024n WHERE room_type IN ('Private room', 'Shared room', 'Hotel room', 'Entire home/apt')\")\r\n",
+					"distinct.createOrReplaceTempView(\"Airbnb2024z\")"
+				],
+				"execution_count": 76
+			},
+			{
+				"cell_type": "code",
+				"metadata": {
+					"jupyter": {
+						"source_hidden": false,
+						"outputs_hidden": false
+					},
+					"nteract": {
+						"transient": {
+							"deleting": false
+						}
+					},
+					"collapsed": false
+				},
+				"source": [
+					"cleanrooms = spark.sql(\"Select Distinct(number_of_reviews) from Airbnb2024z\")\r\n",
+					"display(cleanrooms)"
+				],
+				"execution_count": 83
+			},
+			{
+				"cell_type": "code",
+				"metadata": {
+					"jupyter": {
+						"source_hidden": false,
+						"outputs_hidden": false
+					},
+					"nteract": {
+						"transient": {
+							"deleting": false
+						}
+					}
+				},
+				"source": [
+					"Clean = spark.sql(\"Select * from Airbnb2024 where  = '0'\")\r\n",
+					"display(room_with_price_0)"
+				],
+				"execution_count": null
+			},
+			{
+				"cell_type": "code",
+				"metadata": {
+					"jupyter": {
+						"source_hidden": true,
 						"outputs_hidden": false
 					},
 					"nteract": {
@@ -261,7 +320,7 @@
 					"db_2019 = spark.read.load('abfss://ffs@abdatalake.dfs.core.windows.net/Raw Datasets/2019.csv',format='csv', header=True)\r\n",
 					"display(db_2019)"
 				],
-				"execution_count": 65
+				"execution_count": null
 			},
 			{
 				"cell_type": "code",
