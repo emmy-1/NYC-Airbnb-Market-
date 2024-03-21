@@ -17,7 +17,7 @@
 				"spark.dynamicAllocation.enabled": "false",
 				"spark.dynamicAllocation.minExecutors": "2",
 				"spark.dynamicAllocation.maxExecutors": "2",
-				"spark.autotune.trackingId": "4dce2b36-740d-4e94-b5f8-e0fd4f4944b8"
+				"spark.autotune.trackingId": "91383e17-cb72-4c42-ad30-f29ba4f6e2a1"
 			}
 		},
 		"metadata": {
@@ -73,7 +73,7 @@
 					")\r\n",
 					"display(df.limit(10))"
 				],
-				"execution_count": 14
+				"execution_count": 28
 			},
 			{
 				"cell_type": "code",
@@ -116,10 +116,10 @@
 					"format='csv',\r\n",
 					"schema=nySchema,\r\n",
 					"header=True)\r\n",
-					"display(NeyWork2024)\r\n",
+					"display(NeyWork2024.limit(10))\r\n",
 					""
 				],
-				"execution_count": 18
+				"execution_count": 48
 			},
 			{
 				"cell_type": "markdown",
@@ -138,7 +138,7 @@
 				"cell_type": "code",
 				"metadata": {
 					"jupyter": {
-						"source_hidden": false,
+						"source_hidden": true,
 						"outputs_hidden": false
 					},
 					"nteract": {
@@ -150,17 +150,17 @@
 				},
 				"source": [
 					"def filtering (dataset, Column,filter_word):\r\n",
-					"    filterby = dataset.filter(dataset[Column].rlike(filter_word))\r\n",
+					"    filterby = dataset.filter(~dataset[Column].rlike(filter_word))\r\n",
 					"    return filterby"
 				],
-				"execution_count": 25
+				"execution_count": 49
 			},
 			{
 				"cell_type": "code",
 				"metadata": {
 					"jupyter": {
-						"source_hidden": false,
-						"outputs_hidden": false
+						"source_hidden": true,
+						"outputs_hidden": true
 					},
 					"nteract": {
 						"transient": {
@@ -171,9 +171,9 @@
 				},
 				"source": [
 					"DDd2024 = filtering(NeyWork2024, 'host_id','^[0-9]*$' )\r\n",
-					"display(DDd2024)"
+					"display(DDd2024.limit(10))"
 				],
-				"execution_count": 27
+				"execution_count": null
 			},
 			{
 				"cell_type": "markdown",
@@ -204,9 +204,9 @@
 				"source": [
 					"def CreateSqltb (dataset, name):\r\n",
 					"    return dataset.createOrReplaceTempView(name)\r\n",
-					"CreateSqltb(Db2024, \"Airbnb2024\")"
+					"CreateSqltb(NeyWork2024, \"Airbnb2024\")"
 				],
-				"execution_count": 30
+				"execution_count": 42
 			},
 			{
 				"cell_type": "markdown",
@@ -252,7 +252,7 @@
 					"Select_distinct= spark.sql(\"Select Distinct(room_type) from Airbnb2024\")\r\n",
 					"display(Select_distinct)"
 				],
-				"execution_count": 34
+				"execution_count": 52
 			},
 			{
 				"cell_type": "code",
@@ -273,7 +273,7 @@
 					"CreateSqltb(distinct, \"Airbnb2024\")\r\n",
 					""
 				],
-				"execution_count": 35
+				"execution_count": 43
 			},
 			{
 				"cell_type": "code",
@@ -293,13 +293,13 @@
 					"Rooms = spark.sql(\"SELECT * FROM Airbnb2024 WHERE room_type IN ('Private room', 'Shared room', 'Hotel room', 'Entire home/apt')\")\r\n",
 					"distinct.createOrReplaceTempView(\"Airbnb2024\")"
 				],
-				"execution_count": 37
+				"execution_count": 44
 			},
 			{
 				"cell_type": "code",
 				"metadata": {
 					"jupyter": {
-						"source_hidden": true,
+						"source_hidden": false,
 						"outputs_hidden": false
 					},
 					"nteract": {
@@ -316,7 +316,7 @@
 					"%%sql\r\n",
 					"SELECT * from Airbnb2024"
 				],
-				"execution_count": null
+				"execution_count": 47
 			},
 			{
 				"cell_type": "code",
