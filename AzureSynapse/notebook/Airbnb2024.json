@@ -17,7 +17,7 @@
 				"spark.dynamicAllocation.enabled": "false",
 				"spark.dynamicAllocation.minExecutors": "2",
 				"spark.dynamicAllocation.maxExecutors": "2",
-				"spark.autotune.trackingId": "846588d7-3a38-4ec2-b99d-1bed13220dc7"
+				"spark.autotune.trackingId": "978cc5d5-652e-4d68-95c7-2800e8059396"
 			}
 		},
 		"metadata": {
@@ -49,31 +49,19 @@
 		},
 		"cells": [
 			{
-				"cell_type": "code",
+				"cell_type": "markdown",
 				"metadata": {
-					"jupyter": {
-						"source_hidden": false,
-						"outputs_hidden": false
-					},
 					"nteract": {
 						"transient": {
 							"deleting": false
 						}
-					},
-					"microsoft": {
-						"language": "python"
-					},
-					"collapsed": false
+					}
 				},
 				"source": [
-					"%%pyspark\r\n",
-					"df = spark.read.load('abfss://ffs@abdatalake.dfs.core.windows.net/Raw Datasets/2024.csv', format='csv'\r\n",
-					"## If header exists uncomment line below\r\n",
-					", header=True\r\n",
-					")\r\n",
-					"display(df.limit(10))"
-				],
-				"execution_count": 28
+					"# **LOAD AIRBNB DATASETS**\r\n",
+					"\r\n",
+					"the subsequent PySpark code is designed to define a table schema, read, load, and display the Airbnb 2024,2023 and dataset"
+				]
 			},
 			{
 				"cell_type": "code",
@@ -112,14 +100,23 @@
 					"    StructField(\"availability_365\", IntegerType())\r\n",
 					"    ])\r\n",
 					"\r\n",
-					"NeyWork2024 = spark.read.load('abfss://ffs@abdatalake.dfs.core.windows.net/Raw Datasets/2024.csv',\r\n",
-					"format='csv',\r\n",
-					"schema=nySchema,\r\n",
-					"header=True)\r\n",
+					"\r\n",
+					"def load_datasets(datapart, formattype, schematype=None, header=True):\r\n",
+					"    output = spark.read.load(datapart, format=formattype, schema=schematype, header=header)\r\n",
+					"    return output\r\n",
+					"\r\n",
+					"# Load Datasets\r\n",
+					"NeyWork2024 = load_datasets('abfss://ffs@abdatalake.dfs.core.windows.net/Raw Datasets/2024.csv','csv',nySchema,header=True)\r\n",
+					"db_2023 = load_datasets('abfss://ffs@abdatalake.dfs.core.windows.net/Raw Datasets/2023.csv','csv',nySchema,header=True) \r\n",
+					"db_2019 = load_datasets('abfss://ffs@abdatalake.dfs.core.windows.net/Raw Datasets/2019.csv','csv',header=True)\r\n",
+					"\r\n",
+					"\r\n",
+					"# Load datasets\r\n",
 					"display(NeyWork2024.limit(10))\r\n",
-					""
+					"display(db_2023.limit(10))\r\n",
+					"display(db_2019.limit(10))"
 				],
-				"execution_count": 53
+				"execution_count": 123
 			},
 			{
 				"cell_type": "markdown",
@@ -131,60 +128,7 @@
 					}
 				},
 				"source": [
-					"This will return a new DataFrame that only includes the rows where the 'host_id' column consists only of digits."
-				]
-			},
-			{
-				"cell_type": "code",
-				"metadata": {
-					"jupyter": {
-						"source_hidden": true,
-						"outputs_hidden": false
-					},
-					"nteract": {
-						"transient": {
-							"deleting": false
-						}
-					},
-					"collapsed": false
-				},
-				"source": [
-					"def filtering (dataset, Column,filter_word):\r\n",
-					"    filterby = dataset.filter(~dataset[Column].rlike(filter_word))\r\n",
-					"    return filterby"
-				],
-				"execution_count": 49
-			},
-			{
-				"cell_type": "code",
-				"metadata": {
-					"jupyter": {
-						"source_hidden": true,
-						"outputs_hidden": true
-					},
-					"nteract": {
-						"transient": {
-							"deleting": false
-						}
-					},
-					"collapsed": false
-				},
-				"source": [
-					"DDd2024 = filtering(NeyWork2024, 'host_id','^[0-9]*$' )\r\n",
-					"display(DDd2024.limit(10))"
-				],
-				"execution_count": null
-			},
-			{
-				"cell_type": "markdown",
-				"metadata": {
-					"nteract": {
-						"transient": {
-							"deleting": false
-						}
-					}
-				},
-				"source": [
+					"# CREATE Databases for each datasets\r\n",
 					"function is used to create a temporary view of a DataFrame in Spark. "
 				]
 			},
@@ -204,9 +148,13 @@
 				"source": [
 					"def CreateSqltb (dataset, name):\r\n",
 					"    return dataset.createOrReplaceTempView(name)\r\n",
-					"CreateSqltb(NeyWork2024, \"Airbnb2024n\")"
+					"\r\n",
+					"# Create Tempoary Tables for each year\r\n",
+					"CreateSqltb(NeyWork2024, \"Airbnb2024n\")\r\n",
+					"CreateSqltb(db_2023, \"Airbnb2023n\")\r\n",
+					"CreateSqltb(db_2019, \"Airbnb2019n\")"
 				],
-				"execution_count": 55
+				"execution_count": 124
 			},
 			{
 				"cell_type": "markdown",
@@ -218,7 +166,10 @@
 					}
 				},
 				"source": [
-					"**Looking into outliers in price**"
+					"# Cleaning with distinct Values \r\n",
+					"\r\n",
+					"In data analysis, \"distinct values\" refer to unique or non-repeating entries within a dataset. By examining the unique values within a dataset, one can identify inconsistencies, errors, or anomalies that may need to be addressed. For example, if a column is expected to contain only certain categories or ranges of values, spotting unexpected or out-of-place distinct values can indicate data quality issues.\r\n",
+					"The first step we will take is looking at the unique values that are in the neighborhood group as it will be much easier to see values that aren't supposed to be there. upon writing the following code:"
 				]
 			},
 			{
@@ -231,28 +182,8 @@
 					}
 				},
 				"source": [
-					"Check distinct values in the room_type column. as seen from the distinct we have some unsually columns that seem not to be the 5 major neighbourhood groups in newyork. we will have to drops the rows as they are not useful."
+					"# Select Only 5 major neigbourhood Groups 2024"
 				]
-			},
-			{
-				"cell_type": "code",
-				"metadata": {
-					"jupyter": {
-						"source_hidden": false,
-						"outputs_hidden": false
-					},
-					"nteract": {
-						"transient": {
-							"deleting": false
-						}
-					},
-					"collapsed": false
-				},
-				"source": [
-					"Select_distinct= spark.sql(\"Select Distinct(room_type) from Airbnb2024n\")\r\n",
-					"display(Select_distinct.limit(10))"
-				],
-				"execution_count": 65
 			},
 			{
 				"cell_type": "code",
@@ -273,101 +204,11 @@
 					"CreateSqltb(distinct, \"Airbnb2024new\")\r\n",
 					""
 				],
-				"execution_count": 59
+				"execution_count": 90
 			},
 			{
-				"cell_type": "code",
+				"cell_type": "markdown",
 				"metadata": {
-					"jupyter": {
-						"source_hidden": false,
-						"outputs_hidden": false
-					},
-					"nteract": {
-						"transient": {
-							"deleting": false
-						}
-					},
-					"microsoft": {
-						"language": "sparksql"
-					},
-					"collapsed": false
-				},
-				"source": [
-					"%%sql\r\n",
-					"select Distinct room_type from Airbnb2024new"
-				],
-				"execution_count": 66
-			},
-			{
-				"cell_type": "code",
-				"metadata": {
-					"jupyter": {
-						"source_hidden": true,
-						"outputs_hidden": false
-					},
-					"nteract": {
-						"transient": {
-							"deleting": false
-						}
-					},
-					"collapsed": false
-				},
-				"source": [
-					"Rooms = spark.sql(\"SELECT * FROM Airbnb2024 WHERE room_type IN ('Private room', 'Shared room', 'Hotel room', 'Entire home/apt')\")\r\n",
-					"distinct.createOrReplaceTempView(\"Airbnb2024\")"
-				],
-				"execution_count": 44
-			},
-			{
-				"cell_type": "code",
-				"metadata": {
-					"jupyter": {
-						"source_hidden": true,
-						"outputs_hidden": false
-					},
-					"nteract": {
-						"transient": {
-							"deleting": false
-						}
-					},
-					"microsoft": {
-						"language": "sparksql"
-					},
-					"collapsed": false
-				},
-				"source": [
-					"%%sql\r\n",
-					"SELECT * from Airbnb2024"
-				],
-				"execution_count": 47
-			},
-			{
-				"cell_type": "code",
-				"metadata": {
-					"jupyter": {
-						"source_hidden": false,
-						"outputs_hidden": false
-					},
-					"nteract": {
-						"transient": {
-							"deleting": false
-						}
-					},
-					"collapsed": false
-				},
-				"source": [
-					"db_2023 = spark.read.load('abfss://ffs@abdatalake.dfs.core.windows.net/Raw Datasets/2023.csv',format='csv',schema=nySchema,header=True)\r\n",
-					"display(db_2023)"
-				],
-				"execution_count": 67
-			},
-			{
-				"cell_type": "code",
-				"metadata": {
-					"jupyter": {
-						"source_hidden": false,
-						"outputs_hidden": false
-					},
 					"nteract": {
 						"transient": {
 							"deleting": false
@@ -375,30 +216,8 @@
 					}
 				},
 				"source": [
-					"CreateSqltb(db_2023, \"Airbnb2023n\")"
-				],
-				"execution_count": 69
-			},
-			{
-				"cell_type": "code",
-				"metadata": {
-					"jupyter": {
-						"source_hidden": false,
-						"outputs_hidden": false
-					},
-					"nteract": {
-						"transient": {
-							"deleting": false
-						}
-					},
-					"collapsed": false
-				},
-				"source": [
-					"Select_distinct1= spark.sql(\"Select Distinct(neighbourhood_group) from Airbnb2023n\")\r\n",
-					"display(Select_distinct1)\r\n",
-					""
-				],
-				"execution_count": 71
+					"# Select only the most common room type in 2023 datasets"
+				]
 			},
 			{
 				"cell_type": "code",
@@ -418,58 +237,11 @@
 					"Roomclean = spark.sql(\" Select * from Airbnb2023n WHERE room_type IN ('Shared room', 'Hotel room', 'Entire home/apt', 'Private room')\")\r\n",
 					"CreateSqltb(Roomclean, \"Airbnb2023new\")"
 				],
-				"execution_count": 73
+				"execution_count": 96
 			},
 			{
-				"cell_type": "code",
+				"cell_type": "markdown",
 				"metadata": {
-					"jupyter": {
-						"source_hidden": false,
-						"outputs_hidden": false
-					},
-					"nteract": {
-						"transient": {
-							"deleting": false
-						}
-					},
-					"microsoft": {
-						"language": "sparksql"
-					},
-					"collapsed": false
-				},
-				"source": [
-					"%%sql\r\n",
-					"select Distinct neighbourhood_group from Airbnb2024new"
-				],
-				"execution_count": 76
-			},
-			{
-				"cell_type": "code",
-				"metadata": {
-					"jupyter": {
-						"source_hidden": false,
-						"outputs_hidden": false
-					},
-					"nteract": {
-						"transient": {
-							"deleting": false
-						}
-					},
-					"collapsed": false
-				},
-				"source": [
-					"db_2019 = spark.read.load('abfss://ffs@abdatalake.dfs.core.windows.net/Raw Datasets/2019.csv',format='csv',header=True)\r\n",
-					"display(db_2019)"
-				],
-				"execution_count": 78
-			},
-			{
-				"cell_type": "code",
-				"metadata": {
-					"jupyter": {
-						"source_hidden": false,
-						"outputs_hidden": false
-					},
 					"nteract": {
 						"transient": {
 							"deleting": false
@@ -477,29 +249,8 @@
 					}
 				},
 				"source": [
-					"CreateSqltb(db_2019, \"Airbnb2019n\")"
-				],
-				"execution_count": 79
-			},
-			{
-				"cell_type": "code",
-				"metadata": {
-					"jupyter": {
-						"source_hidden": false,
-						"outputs_hidden": false
-					},
-					"nteract": {
-						"transient": {
-							"deleting": false
-						}
-					},
-					"collapsed": false
-				},
-				"source": [
-					"Select_d= spark.sql(\"Select Distinct(neighbourhood_group) from Airbnb2019New\")\r\n",
-					"display(Select_d)"
-				],
-				"execution_count": 87
+					"# Select Only 5 major neigbourhood Groups 2019"
+				]
 			},
 			{
 				"cell_type": "code",
@@ -518,7 +269,21 @@
 					"neighbourhoodclean = spark.sql(\" Select * from Airbnb2019n WHERE neighbourhood_group IN('Queens','Brooklyn','Staten Island','Manhattan','Bronx')\")\r\n",
 					"CreateSqltb(neighbourhoodclean, \"Airbnb2019New\")"
 				],
-				"execution_count": 86
+				"execution_count": 101
+			},
+			{
+				"cell_type": "markdown",
+				"metadata": {
+					"nteract": {
+						"transient": {
+							"deleting": false
+						}
+					}
+				},
+				"source": [
+					"# Create a parameter cell\r\n",
+					"Azure Synapse pipelines look for the parameters cell, and treat this cell as defaults for the parameters passed in at execution time. The execution engine will add a new cell beneath the parameters cell with input parameters to overwrite the default values. When a parameters cell isn't designated, the injected cell will be inserted at the top of the notebook."
+				]
 			},
 			{
 				"cell_type": "code",
@@ -531,10 +296,16 @@
 						"transient": {
 							"deleting": false
 						}
-					}
+					},
+					"tags": [
+						"parameters"
+					]
 				},
 				"source": [
-					""
+					"import uuid\r\n",
+					"\r\n",
+					"# Generate random GUID\r\n",
+					"runId = uuid.uuid4()"
 				],
 				"execution_count": null
 			}
