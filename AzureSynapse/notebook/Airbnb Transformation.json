@@ -1,10 +1,10 @@
 {
-	"name": "Airbnb2024",
+	"name": "Airbnb Transformation",
 	"properties": {
 		"nbformat": 4,
 		"nbformat_minor": 2,
 		"bigDataPool": {
-			"referenceName": "Airbnbsparkpool",
+			"referenceName": "newspaarkpool",
 			"type": "BigDataPoolReference"
 		},
 		"sessionProperties": {
@@ -17,7 +17,7 @@
 				"spark.dynamicAllocation.enabled": "false",
 				"spark.dynamicAllocation.minExecutors": "2",
 				"spark.dynamicAllocation.maxExecutors": "2",
-				"spark.autotune.trackingId": "978cc5d5-652e-4d68-95c7-2800e8059396"
+				"spark.autotune.trackingId": "15a8679f-02ca-4a75-9706-f6b77cfe6337"
 			}
 		},
 		"metadata": {
@@ -31,15 +31,15 @@
 				"name": "python"
 			},
 			"a365ComputeOptions": {
-				"id": "/subscriptions/2807cfaa-f940-4555-b623-1800da5ab957/resourceGroups/NewYorkAirbnb/providers/Microsoft.Synapse/workspaces/airbnbworkspace/bigDataPools/Airbnbsparkpool",
-				"name": "Airbnbsparkpool",
+				"id": "/subscriptions/2807cfaa-f940-4555-b623-1800da5ab957/resourceGroups/NewYorkAirbnb/providers/Microsoft.Synapse/workspaces/airbnbworkspace/bigDataPools/newspaarkpool",
+				"name": "newspaarkpool",
 				"type": "Spark",
-				"endpoint": "https://airbnbworkspace.dev.azuresynapse.net/livyApi/versions/2019-11-01-preview/sparkPools/Airbnbsparkpool",
+				"endpoint": "https://airbnbworkspace.dev.azuresynapse.net/livyApi/versions/2019-11-01-preview/sparkPools/newspaarkpool",
 				"auth": {
 					"type": "AAD",
 					"authResource": "https://dev.azuresynapse.net"
 				},
-				"sparkVersion": "3.4",
+				"sparkVersion": "3.3",
 				"nodeCount": 3,
 				"cores": 4,
 				"memory": 28,
@@ -62,6 +62,24 @@
 					"\r\n",
 					"the subsequent PySpark code is designed to define a table schema, read, load, and display the Airbnb 2024,2023 and dataset"
 				]
+			},
+			{
+				"cell_type": "code",
+				"metadata": {
+					"jupyter": {
+						"source_hidden": false,
+						"outputs_hidden": false
+					},
+					"nteract": {
+						"transient": {
+							"deleting": false
+						}
+					}
+				},
+				"source": [
+					""
+				],
+				"execution_count": null
 			},
 			{
 				"cell_type": "code",
@@ -116,7 +134,7 @@
 					"display(db_2023.limit(10))\r\n",
 					"display(db_2019.limit(10))"
 				],
-				"execution_count": 123
+				"execution_count": 1
 			},
 			{
 				"cell_type": "markdown",
@@ -154,7 +172,7 @@
 					"CreateSqltb(db_2023, \"Airbnb2023n\")\r\n",
 					"CreateSqltb(db_2019, \"Airbnb2019n\")"
 				],
-				"execution_count": 124
+				"execution_count": 3
 			},
 			{
 				"cell_type": "markdown",
@@ -204,7 +222,7 @@
 					"CreateSqltb(distinct, \"Airbnb2024new\")\r\n",
 					""
 				],
-				"execution_count": 90
+				"execution_count": 4
 			},
 			{
 				"cell_type": "markdown",
@@ -237,7 +255,7 @@
 					"Roomclean = spark.sql(\" Select * from Airbnb2023n WHERE room_type IN ('Shared room', 'Hotel room', 'Entire home/apt', 'Private room')\")\r\n",
 					"CreateSqltb(Roomclean, \"Airbnb2023new\")"
 				],
-				"execution_count": 96
+				"execution_count": 8
 			},
 			{
 				"cell_type": "markdown",
@@ -269,7 +287,7 @@
 					"neighbourhoodclean = spark.sql(\" Select * from Airbnb2019n WHERE neighbourhood_group IN('Queens','Brooklyn','Staten Island','Manhattan','Bronx')\")\r\n",
 					"CreateSqltb(neighbourhoodclean, \"Airbnb2019New\")"
 				],
-				"execution_count": 101
+				"execution_count": 9
 			},
 			{
 				"cell_type": "markdown",
@@ -281,8 +299,7 @@
 					}
 				},
 				"source": [
-					"# Create a parameter cell\r\n",
-					"Azure Synapse pipelines look for the parameters cell, and treat this cell as defaults for the parameters passed in at execution time. The execution engine will add a new cell beneath the parameters cell with input parameters to overwrite the default values. When a parameters cell isn't designated, the injected cell will be inserted at the top of the notebook."
+					"# Write Transformed Dataset into an Azure Datalake"
 				]
 			},
 			{
@@ -296,16 +313,51 @@
 						"transient": {
 							"deleting": false
 						}
-					},
-					"tags": [
-						"parameters"
-					]
+					}
 				},
 				"source": [
-					"import uuid\r\n",
-					"\r\n",
-					"# Generate random GUID\r\n",
-					"runId = uuid.uuid4()"
+					"def write_dataset(dataset, filename):\r\n",
+					"    output_path = 'abfss://ffs@abdatalake.dfs.core.windows.net/Transformed Datasets/' + filename\r\n",
+					"    dataset.coalesce(1).write.format('csv').mode('overwrite').option('header',True).save(output_path)"
+				],
+				"execution_count": 7
+			},
+			{
+				"cell_type": "code",
+				"metadata": {
+					"jupyter": {
+						"source_hidden": false,
+						"outputs_hidden": false
+					},
+					"nteract": {
+						"transient": {
+							"deleting": false
+						}
+					}
+				},
+				"source": [
+					"write_dataset(distinct, '2024.csv')\r\n",
+					"write_dataset(Roomclean, '2023.csv')\r\n",
+					"write_dataset(neighbourhoodclean, '2019.csv')\r\n",
+					""
+				],
+				"execution_count": 10
+			},
+			{
+				"cell_type": "code",
+				"metadata": {
+					"jupyter": {
+						"source_hidden": false,
+						"outputs_hidden": false
+					},
+					"nteract": {
+						"transient": {
+							"deleting": false
+						}
+					}
+				},
+				"source": [
+					""
 				],
 				"execution_count": null
 			}
