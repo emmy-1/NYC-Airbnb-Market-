@@ -782,6 +782,64 @@
 						"type": "DatasetReference"
 					}
 				]
+			},
+			{
+				"name": "Airbnb Transformation",
+				"type": "SynapseNotebook",
+				"dependsOn": [
+					{
+						"activity": "Note Book hold time",
+						"dependencyConditions": [
+							"Completed"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"notebook": {
+						"referenceName": {
+							"value": "Airbnb Transformation",
+							"type": "Expression"
+						},
+						"type": "NotebookReference"
+					},
+					"snapshot": true,
+					"executorSize": "Small",
+					"conf": {
+						"spark.dynamicAllocation.enabled": false,
+						"spark.dynamicAllocation.minExecutors": 3,
+						"spark.dynamicAllocation.maxExecutors": 3
+					},
+					"driverSize": "Small",
+					"numExecutors": 3
+				},
+				"linkedServiceName": {
+					"referenceName": "AzureSynapseArtifacts1",
+					"type": "LinkedServiceReference"
+				}
+			},
+			{
+				"name": "Note Book hold time",
+				"type": "Wait",
+				"dependsOn": [
+					{
+						"activity": "AB_2019 Copy Activity",
+						"dependencyConditions": [
+							"Completed"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"waitTimeInSeconds": 3
+				}
 			}
 		],
 		"annotations": [],
