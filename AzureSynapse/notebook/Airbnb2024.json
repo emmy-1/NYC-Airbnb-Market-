@@ -17,7 +17,7 @@
 				"spark.dynamicAllocation.enabled": "false",
 				"spark.dynamicAllocation.minExecutors": "2",
 				"spark.dynamicAllocation.maxExecutors": "2",
-				"spark.autotune.trackingId": "91383e17-cb72-4c42-ad30-f29ba4f6e2a1"
+				"spark.autotune.trackingId": "b823dc1e-eff7-40f6-967d-2814b8ab6b93"
 			}
 		},
 		"metadata": {
@@ -119,7 +119,7 @@
 					"display(NeyWork2024.limit(10))\r\n",
 					""
 				],
-				"execution_count": 48
+				"execution_count": 53
 			},
 			{
 				"cell_type": "markdown",
@@ -204,9 +204,9 @@
 				"source": [
 					"def CreateSqltb (dataset, name):\r\n",
 					"    return dataset.createOrReplaceTempView(name)\r\n",
-					"CreateSqltb(NeyWork2024, \"Airbnb2024\")"
+					"CreateSqltb(NeyWork2024, \"Airbnb2024n\")"
 				],
-				"execution_count": 42
+				"execution_count": 55
 			},
 			{
 				"cell_type": "markdown",
@@ -249,10 +249,10 @@
 					"collapsed": false
 				},
 				"source": [
-					"Select_distinct= spark.sql(\"Select Distinct(room_type) from Airbnb2024\")\r\n",
-					"display(Select_distinct)"
+					"Select_distinct= spark.sql(\"Select Distinct(room_type) from Airbnb2024n\")\r\n",
+					"display(Select_distinct.limit(10))"
 				],
-				"execution_count": 52
+				"execution_count": 65
 			},
 			{
 				"cell_type": "code",
@@ -269,17 +269,40 @@
 					"collapsed": false
 				},
 				"source": [
-					"distinct = spark.sql(\"SELECT * FROM Airbnb2024 WHERE neighbourhood_group IN ('Manhattan', 'Bronx', 'Brooklyn', 'Staten Island', 'Queens')\")\r\n",
-					"CreateSqltb(distinct, \"Airbnb2024\")\r\n",
+					"distinct = spark.sql(\"SELECT * FROM Airbnb2024n WHERE neighbourhood_group IN ('Manhattan', 'Bronx', 'Brooklyn', 'Staten Island', 'Queens')\")\r\n",
+					"CreateSqltb(distinct, \"Airbnb2024new\")\r\n",
 					""
 				],
-				"execution_count": 43
+				"execution_count": 59
 			},
 			{
 				"cell_type": "code",
 				"metadata": {
 					"jupyter": {
 						"source_hidden": false,
+						"outputs_hidden": false
+					},
+					"nteract": {
+						"transient": {
+							"deleting": false
+						}
+					},
+					"microsoft": {
+						"language": "sparksql"
+					},
+					"collapsed": false
+				},
+				"source": [
+					"%%sql\r\n",
+					"select Distinct room_type from Airbnb2024new"
+				],
+				"execution_count": 66
+			},
+			{
+				"cell_type": "code",
+				"metadata": {
+					"jupyter": {
+						"source_hidden": true,
 						"outputs_hidden": false
 					},
 					"nteract": {
@@ -299,7 +322,7 @@
 				"cell_type": "code",
 				"metadata": {
 					"jupyter": {
-						"source_hidden": false,
+						"source_hidden": true,
 						"outputs_hidden": false
 					},
 					"nteract": {
@@ -336,27 +359,7 @@
 					"db_2023 = spark.read.load('abfss://ffs@abdatalake.dfs.core.windows.net/Raw Datasets/2023.csv',format='csv',schema=nySchema,header=True)\r\n",
 					"display(db_2023)"
 				],
-				"execution_count": 20
-			},
-			{
-				"cell_type": "code",
-				"metadata": {
-					"jupyter": {
-						"source_hidden": false,
-						"outputs_hidden": false
-					},
-					"nteract": {
-						"transient": {
-							"deleting": false
-						}
-					},
-					"collapsed": false
-				},
-				"source": [
-					"Dbb2023 = filtering(db_2023, 'host_id','^[0-9]*$' )\r\n",
-					"display(Dbb2023)"
-				],
-				"execution_count": 56
+				"execution_count": 67
 			},
 			{
 				"cell_type": "code",
@@ -372,9 +375,9 @@
 					}
 				},
 				"source": [
-					"CreateSqltb(Dbb2023, \"Airbnb2023\")"
+					"CreateSqltb(db_2023, \"Airbnb2023n\")"
 				],
-				"execution_count": 57
+				"execution_count": 69
 			},
 			{
 				"cell_type": "code",
@@ -391,11 +394,11 @@
 					"collapsed": false
 				},
 				"source": [
-					"Select_distinct1= spark.sql(\"Select Distinct(neighbourhood_group) from Airbnb2019\")\r\n",
+					"Select_distinct1= spark.sql(\"Select Distinct(neighbourhood_group) from Airbnb2023n\")\r\n",
 					"display(Select_distinct1)\r\n",
 					""
 				],
-				"execution_count": 85
+				"execution_count": 71
 			},
 			{
 				"cell_type": "code",
@@ -412,10 +415,10 @@
 					"collapsed": false
 				},
 				"source": [
-					"Roomclean = spark.sql(\" Select * from Airbnb2023 WHERE room_type IN ('Shared room', 'Hotel room', 'Entire home/apt', 'Private room')\")\r\n",
-					"CreateSqltb(Roomclean, \"Airbnb2023\")"
+					"Roomclean = spark.sql(\" Select * from Airbnb2023n WHERE room_type IN ('Shared room', 'Hotel room', 'Entire home/apt', 'Private room')\")\r\n",
+					"CreateSqltb(Roomclean, \"Airbnb2023new\")"
 				],
-				"execution_count": 65
+				"execution_count": 73
 			},
 			{
 				"cell_type": "code",
@@ -428,51 +431,17 @@
 						"transient": {
 							"deleting": false
 						}
+					},
+					"microsoft": {
+						"language": "sparksql"
 					},
 					"collapsed": false
 				},
 				"source": [
-					"neighbourhood = spark.sql(\" Select * from Airbnb2023 WHERE neighbourhood_group IN('Queens','Brooklyn','Staten Island','Manhattan','Bronx')\")\r\n",
-					"CreateSqltb(neighbourhood, \"Airbnb2023\")"
+					"%%sql\r\n",
+					"select Distinct neighbourhood_group from Airbnb2024new"
 				],
-				"execution_count": 72
-			},
-			{
-				"cell_type": "code",
-				"metadata": {
-					"jupyter": {
-						"source_hidden": false,
-						"outputs_hidden": false
-					},
-					"nteract": {
-						"transient": {
-							"deleting": false
-						}
-					},
-					"collapsed": false
-				},
-				"source": [
-					"display(neighbourhood.select(\"room_type\").distinct())"
-				],
-				"execution_count": 68
-			},
-			{
-				"cell_type": "code",
-				"metadata": {
-					"jupyter": {
-						"source_hidden": false,
-						"outputs_hidden": false
-					},
-					"nteract": {
-						"transient": {
-							"deleting": false
-						}
-					}
-				},
-				"source": [
-					"neighbourhood.count()"
-				],
-				"execution_count": 69
+				"execution_count": 76
 			},
 			{
 				"cell_type": "code",
@@ -492,7 +461,7 @@
 					"db_2019 = spark.read.load('abfss://ffs@abdatalake.dfs.core.windows.net/Raw Datasets/2019.csv',format='csv',header=True)\r\n",
 					"display(db_2019)"
 				],
-				"execution_count": 76
+				"execution_count": 78
 			},
 			{
 				"cell_type": "code",
@@ -508,7 +477,27 @@
 					}
 				},
 				"source": [
-					"CreateSqltb(db_2019, \"Airbnb2019\")"
+					"CreateSqltb(db_2019, \"Airbnb2019n\")"
+				],
+				"execution_count": 79
+			},
+			{
+				"cell_type": "code",
+				"metadata": {
+					"jupyter": {
+						"source_hidden": false,
+						"outputs_hidden": false
+					},
+					"nteract": {
+						"transient": {
+							"deleting": false
+						}
+					},
+					"collapsed": false
+				},
+				"source": [
+					"Select_d= spark.sql(\"Select Distinct(neighbourhood_group) from Airbnb2019New\")\r\n",
+					"display(Select_d)"
 				],
 				"execution_count": 84
 			},
@@ -526,29 +515,10 @@
 					}
 				},
 				"source": [
-					"neighbourhoodclean = spark.sql(\" Select * from Airbnb2019 WHERE neighbourhood_group IN('Queens','Brooklyn','Staten Island','Manhattan','Bronx')\")\r\n",
-					"CreateSqltb(neighbourhood, \"Airbnb2019\")"
+					"neighbourhoodclean = spark.sql(\" Select * from Airbnb2019n WHERE neighbourhood_group IN('Queens','Brooklyn','Staten Island','Manhattan','Bronx')\")\r\n",
+					"CreateSqltb(neighbourhoodclean, \"Airbnb2019New\")"
 				],
-				"execution_count": 87
-			},
-			{
-				"cell_type": "code",
-				"metadata": {
-					"jupyter": {
-						"source_hidden": false,
-						"outputs_hidden": false
-					},
-					"nteract": {
-						"transient": {
-							"deleting": false
-						}
-					},
-					"collapsed": false
-				},
-				"source": [
-					"display(neighbourhoodclean.select(\"room_type\").distinct())"
-				],
-				"execution_count": 89
+				"execution_count": 82
 			},
 			{
 				"cell_type": "code",
