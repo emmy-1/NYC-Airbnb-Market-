@@ -17,7 +17,7 @@
 				"spark.dynamicAllocation.enabled": "false",
 				"spark.dynamicAllocation.minExecutors": "2",
 				"spark.dynamicAllocation.maxExecutors": "2",
-				"spark.autotune.trackingId": "b823dc1e-eff7-40f6-967d-2814b8ab6b93"
+				"spark.autotune.trackingId": "846588d7-3a38-4ec2-b99d-1bed13220dc7"
 			}
 		},
 		"metadata": {
@@ -499,7 +499,7 @@
 					"Select_d= spark.sql(\"Select Distinct(neighbourhood_group) from Airbnb2019New\")\r\n",
 					"display(Select_d)"
 				],
-				"execution_count": 84
+				"execution_count": 87
 			},
 			{
 				"cell_type": "code",
@@ -518,7 +518,7 @@
 					"neighbourhoodclean = spark.sql(\" Select * from Airbnb2019n WHERE neighbourhood_group IN('Queens','Brooklyn','Staten Island','Manhattan','Bronx')\")\r\n",
 					"CreateSqltb(neighbourhoodclean, \"Airbnb2019New\")"
 				],
-				"execution_count": 82
+				"execution_count": 86
 			},
 			{
 				"cell_type": "code",
