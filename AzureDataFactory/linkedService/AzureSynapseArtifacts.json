@@ -1,0 +1,12 @@
+{
+	"name": "AzureSynapseArtifacts",
+	"properties": {
+		"annotations": [],
+		"type": "AzureSynapseArtifacts",
+		"typeProperties": {
+			"endpoint": "https://airbnbworkspace.dev.azuresynapse.net",
+			"authentication": "MSI",
+			"workspaceResourceId": "/subscriptions/2807cfaa-f940-4555-b623-1800da5ab957/resourceGroups/NewYorkAirbnb/providers/Microsoft.Synapse/workspaces/airbnbworkspace"
+		}
+	}
+}
