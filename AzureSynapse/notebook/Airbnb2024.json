@@ -17,7 +17,7 @@
 				"spark.dynamicAllocation.enabled": "false",
 				"spark.dynamicAllocation.minExecutors": "2",
 				"spark.dynamicAllocation.maxExecutors": "2",
-				"spark.autotune.trackingId": "6d3957d3-1b37-412c-8fb5-f8cc5f167e11"
+				"spark.autotune.trackingId": "4dce2b36-740d-4e94-b5f8-e0fd4f4944b8"
 			}
 		},
 		"metadata": {
@@ -51,11 +51,17 @@
 			{
 				"cell_type": "code",
 				"metadata": {
+					"jupyter": {
+						"source_hidden": false,
+						"outputs_hidden": false
+					},
+					"nteract": {
+						"transient": {
+							"deleting": false
+						}
+					},
 					"microsoft": {
 						"language": "python"
-					},
-					"jupyter": {
-						"source_hidden": true
 					},
 					"collapsed": false
 				},
@@ -67,7 +73,7 @@
 					")\r\n",
 					"display(df.limit(10))"
 				],
-				"execution_count": 30
+				"execution_count": 14
 			},
 			{
 				"cell_type": "code",
@@ -110,10 +116,10 @@
 					"format='csv',\r\n",
 					"schema=nySchema,\r\n",
 					"header=True)\r\n",
-					"display(NeyWork2024.limit(30))\r\n",
+					"display(NeyWork2024)\r\n",
 					""
 				],
-				"execution_count": 23
+				"execution_count": 18
 			},
 			{
 				"cell_type": "markdown",
@@ -145,12 +151,29 @@
 				"source": [
 					"def filtering (dataset, Column,filter_word):\r\n",
 					"    filterby = dataset.filter(dataset[Column].rlike(filter_word))\r\n",
-					"    return filterby\r\n",
-					"\r\n",
-					"Db2024 = filtering(NeyWork2024, 'host_id','^[0-9]*$' )\r\n",
-					"display(Db2024)"
+					"    return filterby"
 				],
-				"execution_count": 24
+				"execution_count": 25
+			},
+			{
+				"cell_type": "code",
+				"metadata": {
+					"jupyter": {
+						"source_hidden": false,
+						"outputs_hidden": false
+					},
+					"nteract": {
+						"transient": {
+							"deleting": false
+						}
+					},
+					"collapsed": false
+				},
+				"source": [
+					"DDd2024 = filtering(NeyWork2024, 'host_id','^[0-9]*$' )\r\n",
+					"display(DDd2024)"
+				],
+				"execution_count": 27
 			},
 			{
 				"cell_type": "markdown",
