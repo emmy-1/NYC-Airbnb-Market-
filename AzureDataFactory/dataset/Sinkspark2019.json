@@ -10,6 +10,7 @@
 		"typeProperties": {
 			"location": {
 				"type": "AzureBlobFSLocation",
+				"fileName": "2019.csv",
 				"folderPath": "AirbnbDatalake/2019",
 				"fileSystem": "ffs"
 			},
