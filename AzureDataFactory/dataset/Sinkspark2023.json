@@ -10,7 +10,7 @@
 		"typeProperties": {
 			"location": {
 				"type": "AzureBlobFSLocation",
-				"folderPath": "Airbnb Datalake/2023",
+				"folderPath": "AirbnbDatalake/2023",
 				"fileSystem": "ffs"
 			},
 			"columnDelimiter": ",",
