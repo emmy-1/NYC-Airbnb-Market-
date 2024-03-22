@@ -11,7 +11,7 @@
 		},
 		"Source": {
 			"Provider": "ADLS",
-			"Location": "abfss://ffs@abdatalake.dfs.core.windows.net/Airbnb Datalake",
+			"Location": "abfss://ffs@abdatalake.dfs.core.windows.net/AirbnbDatalake",
 			"Properties": {
 				"FormatType": "csv",
 				"LinkedServiceName": "airbnbworkspace-WorkspaceDefaultStorage"

@@ -221,7 +221,7 @@
 				"FormatType": "csv",
 				"SerializeLib": "org.apache.hadoop.hive.serde2.lazy.LazySimpleSerDe",
 				"Properties": {
-					"path": "abfss://ffs@abdatalake.dfs.core.windows.net/Airbnb Datalake/2023",
+					"path": "abfss://ffs@abdatalake.dfs.core.windows.net/AirbnbDatalake/2023",
 					"delimiter": ",",
 					"multiLine": "false",
 					"firstRowAsHeader": "false",
@@ -234,7 +234,7 @@
 			},
 			"Source": {
 				"Provider": "ADLS",
-				"Location": "abfss://ffs@abdatalake.dfs.core.windows.net/Airbnb Datalake/2023",
+				"Location": "abfss://ffs@abdatalake.dfs.core.windows.net/AirbnbDatalake/2023",
 				"Properties": {
 					"LinkedServiceName": "airbnbworkspace-WorkspaceDefaultStorage",
 					"LocationSetToDatabaseDefault": true
