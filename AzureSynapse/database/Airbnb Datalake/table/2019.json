@@ -1,7 +1,7 @@
 {
-	"name": "2024",
+	"name": "2019",
 	"properties": {
-		"Name": "2024",
+		"Name": "2019",
 		"EntityType": "TABLE",
 		"Namespace": {
 			"DatabaseName": "Airbnb Datalake"
@@ -122,20 +122,6 @@
 					"DeltaFormatInvalidMessages": []
 				},
 				{
-					"Name": "property_type",
-					"Description": "describes the type of property listed on the Airbnb platform",
-					"OriginDataTypeName": {
-						"TypeName": "string",
-						"IsComplexType": false,
-						"IsNullable": true,
-						"Length": 256,
-						"Properties": {
-							"HIVE_TYPE_STRING": "string"
-						}
-					},
-					"DeltaFormatInvalidMessages": []
-				},
-				{
 					"Name": "room_type",
 					"Description": "type of accommodation offered.",
 					"OriginDataTypeName": {
@@ -221,7 +207,7 @@
 				"FormatType": "csv",
 				"SerializeLib": "org.apache.hadoop.hive.serde2.lazy.LazySimpleSerDe",
 				"Properties": {
-					"path": "abfss://ffs@abdatalake.dfs.core.windows.net/Airbnb Datalake/2024",
+					"path": "abfss://ffs@abdatalake.dfs.core.windows.net/Airbnb Datalake/2019",
 					"delimiter": ",",
 					"multiLine": "false",
 					"firstRowAsHeader": "false",
@@ -234,7 +220,7 @@
 			},
 			"Source": {
 				"Provider": "ADLS",
-				"Location": "abfss://ffs@abdatalake.dfs.core.windows.net/Airbnb Datalake/2024",
+				"Location": "abfss://ffs@abdatalake.dfs.core.windows.net/Airbnb Datalake/2019",
 				"Properties": {
 					"LinkedServiceName": "airbnbworkspace-WorkspaceDefaultStorage",
 					"LocationSetToDatabaseDefault": true
