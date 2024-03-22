@@ -17,7 +17,7 @@
 				"spark.dynamicAllocation.enabled": "false",
 				"spark.dynamicAllocation.minExecutors": "2",
 				"spark.dynamicAllocation.maxExecutors": "2",
-				"spark.autotune.trackingId": "15a8679f-02ca-4a75-9706-f6b77cfe6337"
+				"spark.autotune.trackingId": "a50de4db-7069-407b-941c-1f16eef4e4b2"
 			}
 		},
 		"metadata": {
@@ -62,24 +62,6 @@
 					"\r\n",
 					"the subsequent PySpark code is designed to define a table schema, read, load, and display the Airbnb 2024,2023 and dataset"
 				]
-			},
-			{
-				"cell_type": "code",
-				"metadata": {
-					"jupyter": {
-						"source_hidden": false,
-						"outputs_hidden": false
-					},
-					"nteract": {
-						"transient": {
-							"deleting": false
-						}
-					}
-				},
-				"source": [
-					""
-				],
-				"execution_count": null
 			},
 			{
 				"cell_type": "code",
@@ -172,7 +154,7 @@
 					"CreateSqltb(db_2023, \"Airbnb2023n\")\r\n",
 					"CreateSqltb(db_2019, \"Airbnb2019n\")"
 				],
-				"execution_count": 3
+				"execution_count": 2
 			},
 			{
 				"cell_type": "markdown",
@@ -222,7 +204,7 @@
 					"CreateSqltb(distinct, \"Airbnb2024new\")\r\n",
 					""
 				],
-				"execution_count": 4
+				"execution_count": 3
 			},
 			{
 				"cell_type": "markdown",
@@ -255,7 +237,7 @@
 					"Roomclean = spark.sql(\" Select * from Airbnb2023n WHERE room_type IN ('Shared room', 'Hotel room', 'Entire home/apt', 'Private room')\")\r\n",
 					"CreateSqltb(Roomclean, \"Airbnb2023new\")"
 				],
-				"execution_count": 8
+				"execution_count": 4
 			},
 			{
 				"cell_type": "markdown",
@@ -287,7 +269,7 @@
 					"neighbourhoodclean = spark.sql(\" Select * from Airbnb2019n WHERE neighbourhood_group IN('Queens','Brooklyn','Staten Island','Manhattan','Bronx')\")\r\n",
 					"CreateSqltb(neighbourhoodclean, \"Airbnb2019New\")"
 				],
-				"execution_count": 9
+				"execution_count": 5
 			},
 			{
 				"cell_type": "markdown",
@@ -313,11 +295,35 @@
 						"transient": {
 							"deleting": false
 						}
+					},
+					"tags": [
+						"parameters"
+					]
+				},
+				"source": [
+					"import uuid\r\n",
+					"\r\n",
+					"# Generate random GUID\r\n",
+					"runId = uuid.uuid4()"
+				],
+				"execution_count": 6
+			},
+			{
+				"cell_type": "code",
+				"metadata": {
+					"jupyter": {
+						"source_hidden": false,
+						"outputs_hidden": false
+					},
+					"nteract": {
+						"transient": {
+							"deleting": false
+						}
 					}
 				},
 				"source": [
-					"def write_dataset(dataset, filename):\r\n",
-					"    output_path = 'abfss://ffs@abdatalake.dfs.core.windows.net/Transformed Datasets/' + filename\r\n",
+					"def write_dataset(dataset, filename, runId):\r\n",
+					"    output_path = 'abfss://ffs@abdatalake.dfs.core.windows.net/Transformed Datasets/' + filename + str(runId)\r\n",
 					"    dataset.coalesce(1).write.format('csv').mode('overwrite').option('header',True).save(output_path)"
 				],
 				"execution_count": 7
@@ -336,12 +342,12 @@
 					}
 				},
 				"source": [
-					"write_dataset(distinct, '2024.csv')\r\n",
-					"write_dataset(Roomclean, '2023.csv')\r\n",
-					"write_dataset(neighbourhoodclean, '2019.csv')\r\n",
+					"write_dataset(distinct, '2024.csv',runId)\r\n",
+					"write_dataset(Roomclean, '2023.csv',runId)\r\n",
+					"write_dataset(neighbourhoodclean, '2019.csv',runId)\r\n",
 					""
 				],
-				"execution_count": 10
+				"execution_count": 8
 			},
 			{
 				"cell_type": "code",
