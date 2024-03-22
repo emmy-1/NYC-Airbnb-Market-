@@ -10,8 +10,8 @@
 		"typeProperties": {
 			"location": {
 				"type": "AzureBlobFSLocation",
-				"fileName": "part-00000-c9e2c13c-b06b-4b72-8494-2fed06e75680-c000.csv",
-				"folderPath": "Transformed Datasets/2023.csv",
+				"fileName": "part-00000-fcdaf4b5-3661-4aa1-9c7e-38aa02edd405-c000.csv",
+				"folderPath": "Transformed Datasets/2023.csv88eb4b3a-2de6-4f44-a86c-3858f7132f1d",
 				"fileSystem": "ffs"
 			},
 			"columnDelimiter": ",",
