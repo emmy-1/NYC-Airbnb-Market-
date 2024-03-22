@@ -1,0 +1,81 @@
+{
+	"name": "Sparkdb2019",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "AzureDataLakeStorage",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "DelimitedText",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobFSLocation",
+				"fileName": "part-00000-a20a3dec-d70c-454d-9edc-d46c3cefb213-c000.csv",
+				"folderPath": "Transformed Datasets/2019.csv",
+				"fileSystem": "ffs"
+			},
+			"columnDelimiter": ",",
+			"escapeChar": "\\",
+			"firstRowAsHeader": true,
+			"quoteChar": "\""
+		},
+		"schema": [
+			{
+				"name": "id",
+				"type": "String"
+			},
+			{
+				"name": "name",
+				"type": "String"
+			},
+			{
+				"name": "host_id",
+				"type": "String"
+			},
+			{
+				"name": "host_name",
+				"type": "String"
+			},
+			{
+				"name": "neighbourhood_group",
+				"type": "String"
+			},
+			{
+				"name": "neighbourhood",
+				"type": "String"
+			},
+			{
+				"name": "latitude",
+				"type": "String"
+			},
+			{
+				"name": "longitude",
+				"type": "String"
+			},
+			{
+				"name": "room_type",
+				"type": "String"
+			},
+			{
+				"name": "price",
+				"type": "String"
+			},
+			{
+				"name": "minimum_nights",
+				"type": "String"
+			},
+			{
+				"name": "number_of_reviews",
+				"type": "String"
+			},
+			{
+				"name": "calculated_host_listings_count",
+				"type": "String"
+			},
+			{
+				"name": "availability_365",
+				"type": "String"
+			}
+		]
+	}
+}
