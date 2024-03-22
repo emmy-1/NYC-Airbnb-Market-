@@ -10,7 +10,7 @@
 		"typeProperties": {
 			"location": {
 				"type": "AzureBlobFSLocation",
-				"folderPath": "Airbnb Datalake/2019",
+				"folderPath": "AirbnbDatalake/2019",
 				"fileSystem": "ffs"
 			},
 			"columnDelimiter": ",",
