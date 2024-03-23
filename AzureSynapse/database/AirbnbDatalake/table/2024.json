@@ -239,7 +239,7 @@
 					"multiLine": "false",
 					"firstRowAsHeader": "false",
 					"serialization.format": "1",
-					"escape": "\\",
+					"escape": "\"",
 					"quote": "\"",
 					"FormatTypeSetToDatabaseDefault": true,
 					"header": "false"
