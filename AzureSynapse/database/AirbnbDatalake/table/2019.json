@@ -122,20 +122,6 @@
 					"DeltaFormatInvalidMessages": []
 				},
 				{
-					"Name": "property_type",
-					"Description": "describes the type of property listed on the Airbnb platform",
-					"OriginDataTypeName": {
-						"TypeName": "string",
-						"IsComplexType": false,
-						"IsNullable": true,
-						"Length": 256,
-						"Properties": {
-							"HIVE_TYPE_STRING": "string"
-						}
-					},
-					"DeltaFormatInvalidMessages": []
-				},
-				{
 					"Name": "Room_type",
 					"Description": "type of accommodation offered.",
 					"OriginDataTypeName": {
