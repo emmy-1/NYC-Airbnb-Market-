@@ -223,12 +223,12 @@
 					"path": "abfss://ffs@abdatalake.dfs.core.windows.net/AirbnbDatalake/2019",
 					"delimiter": ",",
 					"multiLine": "false",
-					"firstRowAsHeader": "false",
+					"firstRowAsHeader": "true",
 					"serialization.format": "1",
 					"escape": "\\",
 					"quote": "\"",
 					"FormatTypeSetToDatabaseDefault": true,
-					"header": "false"
+					"header": "true"
 				}
 			},
 			"Source": {
