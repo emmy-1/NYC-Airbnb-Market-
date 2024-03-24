@@ -17,11 +17,11 @@
 					"Name": "id",
 					"Description": "unique identifier for each Airbnb listing.",
 					"OriginDataTypeName": {
-						"TypeName": "short",
+						"TypeName": "long",
 						"IsComplexType": false,
 						"IsNullable": false,
 						"Properties": {
-							"HIVE_TYPE_STRING": "short"
+							"HIVE_TYPE_STRING": "long"
 						}
 					},
 					"DeltaFormatInvalidMessages": []
