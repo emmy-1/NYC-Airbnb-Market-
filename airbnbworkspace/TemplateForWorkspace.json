@@ -114,6 +114,26 @@
 			"dependsOn": []
 		},
 		{
+			"name": "[concat(parameters('workspaceName'), '/SQL script 2')]",
+			"type": "Microsoft.Synapse/workspaces/sqlscripts",
+			"apiVersion": "2019-06-01-preview",
+			"properties": {
+				"content": {
+					"query": "SELECT * FROM\n    OPENROWSET(\n        BULK 'https://abdatalake.dfs.core.windows.net/ffs/Transformed Datasets/2019.csvd31086f2-e300-49f5-aa5a-30a040c40229/part-00000-94cb97f2-be53-4025-a037-59a41141ebeb-c000.csv',\n        FORMAT = 'CSV',\n        HEADER_ROW = TRUE,\n        PARSER_VERSION = '2.0',\n        FIELDQUOTE = '\"'\n        \n    ) WITH(\n    [id] bigint,\n\t[name] nvarchar(4000) COLLATE Latin1_General_100_CI_AS_SC_UTF8,\n\t[host_id] bigint,\n\t[host_name] nvarchar(4000) COLLATE Latin1_General_100_CI_AS_SC_UTF8,\n\t[neighbourhood_group] nvarchar(4000) COLLATE Latin1_General_100_CI_AS_SC_UTF8,\n\t[neighbourhood] nvarchar(4000) COLLATE Latin1_General_100_CI_AS_SC_UTF8,\n\t[latitude] float,\n\t[longitude] float,\n\t[room_type] nvarchar(4000) COLLATE Latin1_General_100_CI_AS_SC_UTF8,\n\t[price] bigint,\n\t[minimum_nights] bigint,\n\t[number_of_reviews] bigint,\n\t[calculated_host_listings_count] bigint,\n\t[availability_365] bigint\n    )AS [result]",
+					"metadata": {
+						"language": "sql"
+					},
+					"currentConnection": {
+						"databaseName": "master",
+						"poolName": "Built-in"
+					},
+					"resultLimit": 5000
+				},
+				"type": "SqlQuery"
+			},
+			"dependsOn": []
+		},
+		{
 			"name": "[concat(parameters('workspaceName'), '/Airbnb Transformation')]",
 			"type": "Microsoft.Synapse/workspaces/notebooks",
 			"apiVersion": "2019-06-01-preview",
@@ -121,7 +141,7 @@
 				"nbformat": 4,
 				"nbformat_minor": 2,
 				"bigDataPool": {
-					"referenceName": "newspaarkpool",
+					"referenceName": "sparknew",
 					"type": "BigDataPoolReference"
 				},
 				"sessionProperties": {
@@ -134,7 +154,7 @@
 						"spark.dynamicAllocation.enabled": "false",
 						"spark.dynamicAllocation.minExecutors": "2",
 						"spark.dynamicAllocation.maxExecutors": "2",
-						"spark.autotune.trackingId": "e85cab44-bd04-4789-af8e-106995194ad6"
+						"spark.autotune.trackingId": "40d60df4-cac6-43ac-89e8-7560df9f6c5e"
 					}
 				},
 				"metadata": {
@@ -148,16 +168,16 @@
 						"name": "python"
 					},
 					"a365ComputeOptions": {
-						"id": "/subscriptions/2807cfaa-f940-4555-b623-1800da5ab957/resourceGroups/NewYorkAirbnb/providers/Microsoft.Synapse/workspaces/airbnbworkspace/bigDataPools/newspaarkpool",
-						"name": "newspaarkpool",
+						"id": "/subscriptions/2807cfaa-f940-4555-b623-1800da5ab957/resourceGroups/NewYorkAirbnb/providers/Microsoft.Synapse/workspaces/airbnbworkspace/bigDataPools/sparknew",
+						"name": "sparknew",
 						"type": "Spark",
-						"endpoint": "https://airbnbworkspace.dev.azuresynapse.net/livyApi/versions/2019-11-01-preview/sparkPools/newspaarkpool",
+						"endpoint": "https://airbnbworkspace.dev.azuresynapse.net/livyApi/versions/2019-11-01-preview/sparkPools/sparknew",
 						"auth": {
 							"type": "AAD",
 							"authResource": "https://dev.azuresynapse.net"
 						},
 						"sparkVersion": "3.3",
-						"nodeCount": 3,
+						"nodeCount": 10,
 						"cores": 4,
 						"memory": 28
 					},
@@ -230,10 +250,10 @@
 							"# Load datasets\r\n",
 							"display(NeyWork2024.limit(10))\r\n",
 							"display(db_2023.limit(10))\r\n",
-							"display(db_2019.limit(10))"
+							"display(db_2019.limit(10480))"
 						],
 						"outputs": [],
-						"execution_count": 1
+						"execution_count": 2
 					},
 					{
 						"cell_type": "markdown",
@@ -272,7 +292,7 @@
 							"CreateSqltb(db_2019, \"Airbnb2019n\")"
 						],
 						"outputs": [],
-						"execution_count": 2
+						"execution_count": 3
 					},
 					{
 						"cell_type": "markdown",
@@ -387,10 +407,11 @@
 						},
 						"source": [
 							"neighbourhoodclean = spark.sql(\" Select * from Airbnb2019n WHERE neighbourhood_group IN('Queens','Brooklyn','Staten Island','Manhattan','Bronx')\")\r\n",
-							"CreateSqltb(neighbourhoodclean, \"Airbnb2019New\")"
+							"database19 = spark.sql(\"SELECT * FROM Airbnb2019New WHERE id != 'Astoria'\")\r\n",
+							"CreateSqltb(database19, \"Airbnb2019New\")"
 						],
 						"outputs": [],
-						"execution_count": 5
+						"execution_count": 26
 					},
 					{
 						"cell_type": "markdown",
@@ -467,7 +488,7 @@
 						"source": [
 							"write_dataset(distinct, '2024.csv',runId)\r\n",
 							"write_dataset(Roomclean, '2023.csv',runId)\r\n",
-							"write_dataset(neighbourhoodclean, '2019.csv',runId)\r\n",
+							"write_dataset(database19, '2019.csv',runId)\r\n",
 							""
 						],
 						"outputs": [],
@@ -553,8 +574,7 @@
 											"Properties": {
 												"HIVE_TYPE_STRING": "long"
 											}
-										},
-										"DeltaFormatInvalidMessages": []
+										}
 									},
 									{
 										"Name": "Name",
@@ -567,21 +587,19 @@
 											"Properties": {
 												"HIVE_TYPE_STRING": "string"
 											}
-										},
-										"DeltaFormatInvalidMessages": []
+										}
 									},
 									{
 										"Name": "Host_id",
 										"Description": "unique identifier for the host of the Airbnb listing.",
 										"OriginDataTypeName": {
-											"TypeName": "integer",
+											"TypeName": "long",
 											"IsComplexType": false,
 											"IsNullable": false,
 											"Properties": {
-												"HIVE_TYPE_STRING": "integer"
+												"HIVE_TYPE_STRING": "long"
 											}
-										},
-										"DeltaFormatInvalidMessages": []
+										}
 									},
 									{
 										"Name": "Host_name",
@@ -590,12 +608,11 @@
 											"TypeName": "string",
 											"IsComplexType": false,
 											"IsNullable": true,
-											"Length": 256,
+											"Length": 400,
 											"Properties": {
 												"HIVE_TYPE_STRING": "string"
 											}
-										},
-										"DeltaFormatInvalidMessages": []
+										}
 									},
 									{
 										"Name": "Neighborhood_Group",
@@ -608,8 +625,7 @@
 											"Properties": {
 												"HIVE_TYPE_STRING": "string"
 											}
-										},
-										"DeltaFormatInvalidMessages": []
+										}
 									},
 									{
 										"Name": "Neighborhood",
@@ -622,8 +638,7 @@
 											"Properties": {
 												"HIVE_TYPE_STRING": "string"
 											}
-										},
-										"DeltaFormatInvalidMessages": []
+										}
 									},
 									{
 										"Name": "Latitude",
@@ -635,8 +650,7 @@
 											"Properties": {
 												"HIVE_TYPE_STRING": "float"
 											}
-										},
-										"DeltaFormatInvalidMessages": []
+										}
 									},
 									{
 										"Name": "Longitude",
@@ -648,8 +662,7 @@
 											"Properties": {
 												"HIVE_TYPE_STRING": "float"
 											}
-										},
-										"DeltaFormatInvalidMessages": []
+										}
 									},
 									{
 										"Name": "Room_type",
@@ -662,8 +675,7 @@
 											"Properties": {
 												"HIVE_TYPE_STRING": "string"
 											}
-										},
-										"DeltaFormatInvalidMessages": []
+										}
 									},
 									{
 										"Name": "Price",
@@ -675,8 +687,7 @@
 											"Properties": {
 												"HIVE_TYPE_STRING": "integer"
 											}
-										},
-										"DeltaFormatInvalidMessages": []
+										}
 									},
 									{
 										"Name": "Minimum_nights",
@@ -688,8 +699,7 @@
 											"Properties": {
 												"HIVE_TYPE_STRING": "integer"
 											}
-										},
-										"DeltaFormatInvalidMessages": []
+										}
 									},
 									{
 										"Name": "Number_of_reviews",
@@ -701,8 +711,7 @@
 											"Properties": {
 												"HIVE_TYPE_STRING": "integer"
 											}
-										},
-										"DeltaFormatInvalidMessages": []
+										}
 									},
 									{
 										"Name": "Reviews_per_month",
@@ -714,8 +723,7 @@
 											"Properties": {
 												"HIVE_TYPE_STRING": "integer"
 											}
-										},
-										"DeltaFormatInvalidMessages": []
+										}
 									},
 									{
 										"Name": "Calculated_host_listings_count",
@@ -727,8 +735,7 @@
 											"Properties": {
 												"HIVE_TYPE_STRING": "integer"
 											}
-										},
-										"DeltaFormatInvalidMessages": []
+										}
 									},
 									{
 										"Name": "Availability",
@@ -740,8 +747,7 @@
 											"Properties": {
 												"HIVE_TYPE_STRING": "integer"
 											}
-										},
-										"DeltaFormatInvalidMessages": []
+										}
 									}
 								],
 								"Format": {
@@ -752,8 +758,8 @@
 									"Properties": {
 										"path": "abfss://ffs@abdatalake.dfs.core.windows.net/AirbnbDatalake/2019",
 										"delimiter": ",",
-										"multiLine": "false",
 										"firstRowAsHeader": "true",
+										"multiLine": "false",
 										"serialization.format": "1",
 										"escape": "\\",
 										"quote": "\"",
@@ -785,8 +791,7 @@
 							},
 							"Retention": 0,
 							"Temporary": false,
-							"IsRewriteEnabled": false,
-							"Partitioning": {}
+							"IsRewriteEnabled": false
 						},
 						"Source": {
 							"Type": "SPARK"
@@ -818,8 +823,7 @@
 											"Properties": {
 												"HIVE_TYPE_STRING": "long"
 											}
-										},
-										"DeltaFormatInvalidMessages": []
+										}
 									},
 									{
 										"Name": "Name",
@@ -832,21 +836,19 @@
 											"Properties": {
 												"HIVE_TYPE_STRING": "string"
 											}
-										},
-										"DeltaFormatInvalidMessages": []
+										}
 									},
 									{
 										"Name": "Host_id",
 										"Description": "unique identifier for the host of the Airbnb listing.",
 										"OriginDataTypeName": {
-											"TypeName": "integer",
+											"TypeName": "long",
 											"IsComplexType": false,
 											"IsNullable": false,
 											"Properties": {
-												"HIVE_TYPE_STRING": "integer"
+												"HIVE_TYPE_STRING": "long"
 											}
-										},
-										"DeltaFormatInvalidMessages": []
+										}
 									},
 									{
 										"Name": "Host_name",
@@ -859,8 +861,7 @@
 											"Properties": {
 												"HIVE_TYPE_STRING": "string"
 											}
-										},
-										"DeltaFormatInvalidMessages": []
+										}
 									},
 									{
 										"Name": "Neighborhood_Group",
@@ -873,8 +874,7 @@
 											"Properties": {
 												"HIVE_TYPE_STRING": "string"
 											}
-										},
-										"DeltaFormatInvalidMessages": []
+										}
 									},
 									{
 										"Name": "Neighborhood",
@@ -887,8 +887,7 @@
 											"Properties": {
 												"HIVE_TYPE_STRING": "string"
 											}
-										},
-										"DeltaFormatInvalidMessages": []
+										}
 									},
 									{
 										"Name": "Latitude",
@@ -900,8 +899,7 @@
 											"Properties": {
 												"HIVE_TYPE_STRING": "float"
 											}
-										},
-										"DeltaFormatInvalidMessages": []
+										}
 									},
 									{
 										"Name": "Longitude",
@@ -913,8 +911,7 @@
 											"Properties": {
 												"HIVE_TYPE_STRING": "float"
 											}
-										},
-										"DeltaFormatInvalidMessages": []
+										}
 									},
 									{
 										"Name": "property_type",
@@ -927,8 +924,7 @@
 											"Properties": {
 												"HIVE_TYPE_STRING": "string"
 											}
-										},
-										"DeltaFormatInvalidMessages": []
+										}
 									},
 									{
 										"Name": "Room_type",
@@ -941,8 +937,7 @@
 											"Properties": {
 												"HIVE_TYPE_STRING": "string"
 											}
-										},
-										"DeltaFormatInvalidMessages": []
+										}
 									},
 									{
 										"Name": "Price",
@@ -954,8 +949,7 @@
 											"Properties": {
 												"HIVE_TYPE_STRING": "integer"
 											}
-										},
-										"DeltaFormatInvalidMessages": []
+										}
 									},
 									{
 										"Name": "Minimum_nights",
@@ -967,8 +961,7 @@
 											"Properties": {
 												"HIVE_TYPE_STRING": "integer"
 											}
-										},
-										"DeltaFormatInvalidMessages": []
+										}
 									},
 									{
 										"Name": "Number_of_reviews",
@@ -980,8 +973,7 @@
 											"Properties": {
 												"HIVE_TYPE_STRING": "integer"
 											}
-										},
-										"DeltaFormatInvalidMessages": []
+										}
 									},
 									{
 										"Name": "Reviews_per_month",
@@ -993,8 +985,7 @@
 											"Properties": {
 												"HIVE_TYPE_STRING": "integer"
 											}
-										},
-										"DeltaFormatInvalidMessages": []
+										}
 									},
 									{
 										"Name": "Calculated_host_listings_count",
@@ -1006,8 +997,7 @@
 											"Properties": {
 												"HIVE_TYPE_STRING": "integer"
 											}
-										},
-										"DeltaFormatInvalidMessages": []
+										}
 									},
 									{
 										"Name": "Availability",
@@ -1019,8 +1009,7 @@
 											"Properties": {
 												"HIVE_TYPE_STRING": "integer"
 											}
-										},
-										"DeltaFormatInvalidMessages": []
+										}
 									}
 								],
 								"Format": {
@@ -1031,8 +1020,8 @@
 									"Properties": {
 										"path": "abfss://ffs@abdatalake.dfs.core.windows.net/AirbnbDatalake/2023",
 										"delimiter": ",",
-										"multiLine": "false",
 										"firstRowAsHeader": "true",
+										"multiLine": "false",
 										"serialization.format": "1",
 										"escape": "\\",
 										"quote": "\"",
@@ -1064,8 +1053,7 @@
 							},
 							"Retention": 0,
 							"Temporary": false,
-							"IsRewriteEnabled": false,
-							"Partitioning": {}
+							"IsRewriteEnabled": false
 						},
 						"Source": {
 							"Type": "SPARK"
@@ -1097,8 +1085,7 @@
 											"Properties": {
 												"HIVE_TYPE_STRING": "long"
 											}
-										},
-										"DeltaFormatInvalidMessages": []
+										}
 									},
 									{
 										"Name": "Name",
@@ -1111,21 +1098,19 @@
 											"Properties": {
 												"HIVE_TYPE_STRING": "string"
 											}
-										},
-										"DeltaFormatInvalidMessages": []
+										}
 									},
 									{
 										"Name": "Host_id",
 										"Description": "unique identifier for the host of the Airbnb listing.",
 										"OriginDataTypeName": {
-											"TypeName": "integer",
+											"TypeName": "long",
 											"IsComplexType": false,
 											"IsNullable": false,
 											"Properties": {
-												"HIVE_TYPE_STRING": "integer"
+												"HIVE_TYPE_STRING": "long"
 											}
-										},
-										"DeltaFormatInvalidMessages": []
+										}
 									},
 									{
 										"Name": "Host_name",
@@ -1138,8 +1123,7 @@
 											"Properties": {
 												"HIVE_TYPE_STRING": "string"
 											}
-										},
-										"DeltaFormatInvalidMessages": []
+										}
 									},
 									{
 										"Name": "Neighborhood_Group",
@@ -1152,8 +1136,7 @@
 											"Properties": {
 												"HIVE_TYPE_STRING": "string"
 											}
-										},
-										"DeltaFormatInvalidMessages": []
+										}
 									},
 									{
 										"Name": "Neighborhood",
@@ -1166,8 +1149,7 @@
 											"Properties": {
 												"HIVE_TYPE_STRING": "string"
 											}
-										},
-										"DeltaFormatInvalidMessages": []
+										}
 									},
 									{
 										"Name": "Latitude",
@@ -1179,8 +1161,7 @@
 											"Properties": {
 												"HIVE_TYPE_STRING": "float"
 											}
-										},
-										"DeltaFormatInvalidMessages": []
+										}
 									},
 									{
 										"Name": "Longitude",
@@ -1192,8 +1173,7 @@
 											"Properties": {
 												"HIVE_TYPE_STRING": "float"
 											}
-										},
-										"DeltaFormatInvalidMessages": []
+										}
 									},
 									{
 										"Name": "property_type",
@@ -1206,8 +1186,7 @@
 											"Properties": {
 												"HIVE_TYPE_STRING": "string"
 											}
-										},
-										"DeltaFormatInvalidMessages": []
+										}
 									},
 									{
 										"Name": "Room_type",
@@ -1220,8 +1199,7 @@
 											"Properties": {
 												"HIVE_TYPE_STRING": "string"
 											}
-										},
-										"DeltaFormatInvalidMessages": []
+										}
 									},
 									{
 										"Name": "Price",
@@ -1233,8 +1211,7 @@
 											"Properties": {
 												"HIVE_TYPE_STRING": "integer"
 											}
-										},
-										"DeltaFormatInvalidMessages": []
+										}
 									},
 									{
 										"Name": "Minimum_nights",
@@ -1246,8 +1223,7 @@
 											"Properties": {
 												"HIVE_TYPE_STRING": "integer"
 											}
-										},
-										"DeltaFormatInvalidMessages": []
+										}
 									},
 									{
 										"Name": "Number_of_reviews",
@@ -1259,8 +1235,7 @@
 											"Properties": {
 												"HIVE_TYPE_STRING": "integer"
 											}
-										},
-										"DeltaFormatInvalidMessages": []
+										}
 									},
 									{
 										"Name": "Reviews_per_month",
@@ -1272,8 +1247,7 @@
 											"Properties": {
 												"HIVE_TYPE_STRING": "integer"
 											}
-										},
-										"DeltaFormatInvalidMessages": []
+										}
 									},
 									{
 										"Name": "Calculated_host_listings_count",
@@ -1285,8 +1259,7 @@
 											"Properties": {
 												"HIVE_TYPE_STRING": "integer"
 											}
-										},
-										"DeltaFormatInvalidMessages": []
+										}
 									},
 									{
 										"Name": "Availability",
@@ -1298,8 +1271,7 @@
 											"Properties": {
 												"HIVE_TYPE_STRING": "integer"
 											}
-										},
-										"DeltaFormatInvalidMessages": []
+										}
 									}
 								],
 								"Format": {
@@ -1310,8 +1282,8 @@
 									"Properties": {
 										"path": "abfss://ffs@abdatalake.dfs.core.windows.net/AirbnbDatalake/2024",
 										"delimiter": ",",
-										"multiLine": "false",
 										"firstRowAsHeader": "true",
+										"multiLine": "false",
 										"serialization.format": "1",
 										"escape": "\"",
 										"quote": "\"",
@@ -1343,8 +1315,7 @@
 							},
 							"Retention": 0,
 							"Temporary": false,
-							"IsRewriteEnabled": false,
-							"Partitioning": {}
+							"IsRewriteEnabled": false
 						},
 						"Source": {
 							"Type": "SPARK"
