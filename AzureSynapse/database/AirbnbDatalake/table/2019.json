@@ -44,11 +44,11 @@
 					"Name": "Host_id",
 					"Description": "unique identifier for the host of the Airbnb listing.",
 					"OriginDataTypeName": {
-						"TypeName": "integer",
+						"TypeName": "long",
 						"IsComplexType": false,
 						"IsNullable": false,
 						"Properties": {
-							"HIVE_TYPE_STRING": "integer"
+							"HIVE_TYPE_STRING": "long"
 						}
 					},
 					"DeltaFormatInvalidMessages": []
@@ -225,7 +225,7 @@
 					"multiLine": "false",
 					"firstRowAsHeader": "true",
 					"serialization.format": "1",
-					"escape": "\"",
+					"escape": "\\",
 					"quote": "\"",
 					"FormatTypeSetToDatabaseDefault": true,
 					"header": "true"

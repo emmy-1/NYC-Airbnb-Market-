@@ -42,11 +42,11 @@
 				},
 				{
 					"Name": "Host_id",
-					"Description": "unique identifier for the host of the Airbnb listing.",
+					"Description": "",
 					"OriginDataTypeName": {
 						"TypeName": "integer",
-						"IsComplexType": false,
 						"IsNullable": false,
+						"IsComplexType": false,
 						"Properties": {
 							"HIVE_TYPE_STRING": "integer"
 						}
