@@ -568,11 +568,11 @@
 										"Name": "id",
 										"Description": "unique identifier for each Airbnb listing.",
 										"OriginDataTypeName": {
-											"TypeName": "long",
+											"TypeName": "integer",
 											"IsComplexType": false,
 											"IsNullable": false,
 											"Properties": {
-												"HIVE_TYPE_STRING": "long"
+												"HIVE_TYPE_STRING": "integer"
 											}
 										}
 									},
