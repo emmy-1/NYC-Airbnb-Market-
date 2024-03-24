@@ -41,6 +41,19 @@
 					"DeltaFormatInvalidMessages": []
 				},
 				{
+					"Name": "Host_id",
+					"Description": "",
+					"OriginDataTypeName": {
+						"TypeName": "integer",
+						"IsNullable": false,
+						"IsComplexType": false,
+						"Properties": {
+							"HIVE_TYPE_STRING": "integer"
+						}
+					},
+					"DeltaFormatInvalidMessages": []
+				},
+				{
 					"Name": "Host_name",
 					"Description": "name of the host associated with the listing.",
 					"OriginDataTypeName": {
@@ -251,7 +264,7 @@
 		"Properties": {
 			"Description": "",
 			"DisplayFolderInfo": "{\"name\":\"Others\",\"colorCode\":\"\"}",
-			"PrimaryKeys": "id",
+			"PrimaryKeys": "id,Host_id",
 			"spark.sql.sources.provider": "csv"
 		},
 		"Retention": 0,
