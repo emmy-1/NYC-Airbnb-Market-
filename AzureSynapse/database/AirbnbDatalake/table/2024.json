@@ -18,8 +18,8 @@
 					"Description": "unique identifier for each Airbnb listing.",
 					"OriginDataTypeName": {
 						"TypeName": "long",
-						"IsNullable": false,
 						"IsComplexType": false,
+						"IsNullable": false,
 						"Properties": {
 							"HIVE_TYPE_STRING": "long"
 						}
@@ -31,8 +31,8 @@
 					"Description": "title or name of the listing.",
 					"OriginDataTypeName": {
 						"TypeName": "string",
-						"IsNullable": true,
 						"IsComplexType": false,
+						"IsNullable": true,
 						"Length": 256,
 						"Properties": {
 							"HIVE_TYPE_STRING": "string"
@@ -45,8 +45,8 @@
 					"Description": "unique identifier for the host of the Airbnb listing.",
 					"OriginDataTypeName": {
 						"TypeName": "integer",
-						"IsNullable": false,
 						"IsComplexType": false,
+						"IsNullable": false,
 						"Properties": {
 							"HIVE_TYPE_STRING": "integer"
 						}
@@ -58,8 +58,8 @@
 					"Description": "name of the host associated with the listing.",
 					"OriginDataTypeName": {
 						"TypeName": "string",
-						"IsNullable": true,
 						"IsComplexType": false,
+						"IsNullable": true,
 						"Length": 256,
 						"Properties": {
 							"HIVE_TYPE_STRING": "string"
@@ -72,8 +72,8 @@
 					"Description": "geocoded neighborhood defined by open or public.",
 					"OriginDataTypeName": {
 						"TypeName": "string",
-						"IsNullable": true,
 						"IsComplexType": false,
+						"IsNullable": true,
 						"Length": 256,
 						"Properties": {
 							"HIVE_TYPE_STRING": "string"
@@ -86,8 +86,8 @@
 					"Description": "the area where the listing is located.",
 					"OriginDataTypeName": {
 						"TypeName": "string",
-						"IsNullable": true,
 						"IsComplexType": false,
+						"IsNullable": true,
 						"Length": 256,
 						"Properties": {
 							"HIVE_TYPE_STRING": "string"
@@ -100,8 +100,8 @@
 					"Description": "geographic coordinates of the listing.",
 					"OriginDataTypeName": {
 						"TypeName": "float",
-						"IsNullable": true,
 						"IsComplexType": false,
+						"IsNullable": true,
 						"Properties": {
 							"HIVE_TYPE_STRING": "float"
 						}
@@ -113,8 +113,8 @@
 					"Description": "geographic coordinates of the listing.",
 					"OriginDataTypeName": {
 						"TypeName": "float",
-						"IsNullable": true,
 						"IsComplexType": false,
+						"IsNullable": true,
 						"Properties": {
 							"HIVE_TYPE_STRING": "float"
 						}
@@ -126,8 +126,8 @@
 					"Description": "describes the type of property listed on the Airbnb platform",
 					"OriginDataTypeName": {
 						"TypeName": "string",
-						"IsNullable": true,
 						"IsComplexType": false,
+						"IsNullable": true,
 						"Length": 256,
 						"Properties": {
 							"HIVE_TYPE_STRING": "string"
@@ -140,8 +140,8 @@
 					"Description": "type of accommodation offered.",
 					"OriginDataTypeName": {
 						"TypeName": "string",
-						"IsNullable": true,
 						"IsComplexType": false,
+						"IsNullable": true,
 						"Length": 256,
 						"Properties": {
 							"HIVE_TYPE_STRING": "string"
@@ -154,8 +154,8 @@
 					"Description": "nightly rental price for the listing.",
 					"OriginDataTypeName": {
 						"TypeName": "integer",
-						"IsNullable": true,
 						"IsComplexType": false,
+						"IsNullable": true,
 						"Properties": {
 							"HIVE_TYPE_STRING": "integer"
 						}
@@ -167,8 +167,8 @@
 					"Description": "minimum number of nights required for booking.",
 					"OriginDataTypeName": {
 						"TypeName": "integer",
-						"IsNullable": true,
 						"IsComplexType": false,
+						"IsNullable": true,
 						"Properties": {
 							"HIVE_TYPE_STRING": "integer"
 						}
@@ -180,8 +180,8 @@
 					"Description": "total number of reviews received for the listing.",
 					"OriginDataTypeName": {
 						"TypeName": "integer",
-						"IsNullable": true,
 						"IsComplexType": false,
+						"IsNullable": true,
 						"Properties": {
 							"HIVE_TYPE_STRING": "integer"
 						}
@@ -193,8 +193,8 @@
 					"Description": "verage number of reviews a room receives monthly.",
 					"OriginDataTypeName": {
 						"TypeName": "integer",
-						"IsNullable": true,
 						"IsComplexType": false,
+						"IsNullable": true,
 						"Properties": {
 							"HIVE_TYPE_STRING": "integer"
 						}
@@ -206,8 +206,8 @@
 					"Description": "total number of rooms owned or listed by the same host.",
 					"OriginDataTypeName": {
 						"TypeName": "integer",
-						"IsNullable": true,
 						"IsComplexType": false,
+						"IsNullable": true,
 						"Properties": {
 							"HIVE_TYPE_STRING": "integer"
 						}
@@ -219,8 +219,8 @@
 					"Description": "number of days the listing is available for booking within a certain time frame.",
 					"OriginDataTypeName": {
 						"TypeName": "integer",
-						"IsNullable": true,
 						"IsComplexType": false,
+						"IsNullable": true,
 						"Properties": {
 							"HIVE_TYPE_STRING": "integer"
 						}
@@ -237,12 +237,12 @@
 					"path": "abfss://ffs@abdatalake.dfs.core.windows.net/AirbnbDatalake/2024",
 					"delimiter": ",",
 					"multiLine": "false",
-					"firstRowAsHeader": "false",
+					"firstRowAsHeader": "true",
 					"serialization.format": "1",
 					"escape": "\"",
 					"quote": "\"",
 					"FormatTypeSetToDatabaseDefault": true,
-					"header": "false"
+					"header": "true"
 				}
 			},
 			"Source": {
@@ -265,8 +265,7 @@
 			"Description": "",
 			"DisplayFolderInfo": "{\"name\":\"Others\",\"colorCode\":\"\"}",
 			"PrimaryKeys": "id,Host_id",
-			"spark.sql.sources.provider": "csv",
-			"sql:IsAppendOnly": false
+			"spark.sql.sources.provider": "csv"
 		},
 		"Retention": 0,
 		"Temporary": false,
