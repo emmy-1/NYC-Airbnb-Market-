@@ -17,11 +17,11 @@
 					"Name": "id",
 					"Description": "unique identifier for each Airbnb listing.",
 					"OriginDataTypeName": {
-						"TypeName": "integer",
+						"TypeName": "long",
 						"IsComplexType": false,
-						"IsNullable": true,
+						"IsNullable": false,
 						"Properties": {
-							"HIVE_TYPE_STRING": "integer"
+							"HIVE_TYPE_STRING": "long"
 						}
 					},
 					"DeltaFormatInvalidMessages": []
@@ -250,7 +250,7 @@
 		"Properties": {
 			"Description": "",
 			"DisplayFolderInfo": "{\"name\":\"Others\",\"colorCode\":\"\"}",
-			"PrimaryKeys": "Host_id",
+			"PrimaryKeys": "id,Host_id",
 			"spark.sql.sources.provider": "csv"
 		},
 		"Retention": 0,
