@@ -1,0 +1,372 @@
+{
+	"name": "Airbnb Transformation",
+	"properties": {
+		"nbformat": 4,
+		"nbformat_minor": 2,
+		"bigDataPool": {
+			"referenceName": "newspaarkpool",
+			"type": "BigDataPoolReference"
+		},
+		"sessionProperties": {
+			"driverMemory": "28g",
+			"driverCores": 4,
+			"executorMemory": "28g",
+			"executorCores": 4,
+			"numExecutors": 2,
+			"conf": {
+				"spark.dynamicAllocation.enabled": "false",
+				"spark.dynamicAllocation.minExecutors": "2",
+				"spark.dynamicAllocation.maxExecutors": "2",
+				"spark.autotune.trackingId": "e85cab44-bd04-4789-af8e-106995194ad6"
+			}
+		},
+		"metadata": {
+			"saveOutput": true,
+			"enableDebugMode": false,
+			"kernelspec": {
+				"name": "synapse_pyspark",
+				"display_name": "Synapse PySpark"
+			},
+			"language_info": {
+				"name": "python"
+			},
+			"a365ComputeOptions": {
+				"id": "/subscriptions/2807cfaa-f940-4555-b623-1800da5ab957/resourceGroups/NewYorkAirbnb/providers/Microsoft.Synapse/workspaces/airbnbworkspace/bigDataPools/newspaarkpool",
+				"name": "newspaarkpool",
+				"type": "Spark",
+				"endpoint": "https://airbnbworkspace.dev.azuresynapse.net/livyApi/versions/2019-11-01-preview/sparkPools/newspaarkpool",
+				"auth": {
+					"type": "AAD",
+					"authResource": "https://dev.azuresynapse.net"
+				},
+				"sparkVersion": "3.3",
+				"nodeCount": 3,
+				"cores": 4,
+				"memory": 28,
+				"automaticScaleJobs": false
+			},
+			"sessionKeepAliveTimeout": 30
+		},
+		"cells": [
+			{
+				"cell_type": "markdown",
+				"metadata": {
+					"nteract": {
+						"transient": {
+							"deleting": false
+						}
+					}
+				},
+				"source": [
+					"# **LOAD AIRBNB DATASETS**\r\n",
+					"\r\n",
+					"the subsequent PySpark code is designed to define a table schema, read, load, and display the Airbnb 2024,2023 and dataset"
+				]
+			},
+			{
+				"cell_type": "code",
+				"metadata": {
+					"jupyter": {
+						"source_hidden": false,
+						"outputs_hidden": false
+					},
+					"nteract": {
+						"transient": {
+							"deleting": false
+						}
+					},
+					"collapsed": false
+				},
+				"source": [
+					"from pyspark.sql.types import *\r\n",
+					"from pyspark.sql.functions import *\r\n",
+					"\r\n",
+					"nySchema = StructType([\r\n",
+					"    StructField(\"id\", LongType()),\r\n",
+					"    StructField(\"name\", StringType()),\r\n",
+					"    StructField(\"description\", StringType()),\r\n",
+					"    StructField(\"host_id\", IntegerType()),\r\n",
+					"    StructField(\"host_name\", StringType()),\r\n",
+					"    StructField(\"neighbourhood\", StringType()),\r\n",
+					"    StructField(\"neighbourhood_group\", StringType()),\r\n",
+					"    StructField(\"latitude\", FloatType()),\r\n",
+					"    StructField(\"longitude\", FloatType()),\r\n",
+					"    StructField(\"property_type\", StringType()),\r\n",
+					"    StructField(\"room_type\", StringType()),\r\n",
+					"    StructField(\"price\", IntegerType()),\r\n",
+					"    StructField(\"minimum_nights\", IntegerType()),\r\n",
+					"    StructField(\"number_of_reviews\", IntegerType()),\r\n",
+					"    StructField(\"calculated_host_listings_count\", IntegerType()),\r\n",
+					"    StructField(\"availability_365\", IntegerType())\r\n",
+					"    ])\r\n",
+					"\r\n",
+					"\r\n",
+					"def load_datasets(datapart, formattype, schematype=None, header=True):\r\n",
+					"    output = spark.read.load(datapart, format=formattype, schema=schematype, header=header)\r\n",
+					"    return output\r\n",
+					"\r\n",
+					"# Load Datasets\r\n",
+					"NeyWork2024 = load_datasets('abfss://ffs@abdatalake.dfs.core.windows.net/Raw Datasets/2024.csv','csv',nySchema,header=True)\r\n",
+					"db_2023 = load_datasets('abfss://ffs@abdatalake.dfs.core.windows.net/Raw Datasets/2023.csv','csv',nySchema,header=True) \r\n",
+					"db_2019 = load_datasets('abfss://ffs@abdatalake.dfs.core.windows.net/Raw Datasets/2019.csv','csv',header=True)\r\n",
+					"\r\n",
+					"\r\n",
+					"# Load datasets\r\n",
+					"display(NeyWork2024.limit(10))\r\n",
+					"display(db_2023.limit(10))\r\n",
+					"display(db_2019.limit(10))"
+				],
+				"execution_count": 1
+			},
+			{
+				"cell_type": "markdown",
+				"metadata": {
+					"nteract": {
+						"transient": {
+							"deleting": false
+						}
+					}
+				},
+				"source": [
+					"# CREATE Databases for each datasets\r\n",
+					"function is used to create a temporary view of a DataFrame in Spark. "
+				]
+			},
+			{
+				"cell_type": "code",
+				"metadata": {
+					"jupyter": {
+						"source_hidden": false,
+						"outputs_hidden": false
+					},
+					"nteract": {
+						"transient": {
+							"deleting": false
+						}
+					}
+				},
+				"source": [
+					"def CreateSqltb (dataset, name):\r\n",
+					"    return dataset.createOrReplaceTempView(name)\r\n",
+					"\r\n",
+					"# Create Tempoary Tables for each year\r\n",
+					"CreateSqltb(NeyWork2024, \"Airbnb2024n\")\r\n",
+					"CreateSqltb(db_2023, \"Airbnb2023n\")\r\n",
+					"CreateSqltb(db_2019, \"Airbnb2019n\")"
+				],
+				"execution_count": 2
+			},
+			{
+				"cell_type": "markdown",
+				"metadata": {
+					"nteract": {
+						"transient": {
+							"deleting": false
+						}
+					}
+				},
+				"source": [
+					"# Cleaning with distinct Values \r\n",
+					"\r\n",
+					"In data analysis, \"distinct values\" refer to unique or non-repeating entries within a dataset. By examining the unique values within a dataset, one can identify inconsistencies, errors, or anomalies that may need to be addressed. For example, if a column is expected to contain only certain categories or ranges of values, spotting unexpected or out-of-place distinct values can indicate data quality issues.\r\n",
+					"The first step we will take is looking at the unique values that are in the neighborhood group as it will be much easier to see values that aren't supposed to be there. upon writing the following code:"
+				]
+			},
+			{
+				"cell_type": "markdown",
+				"metadata": {
+					"nteract": {
+						"transient": {
+							"deleting": false
+						}
+					}
+				},
+				"source": [
+					"# Select Only 5 major neigbourhood Groups 2024"
+				]
+			},
+			{
+				"cell_type": "code",
+				"metadata": {
+					"jupyter": {
+						"source_hidden": false,
+						"outputs_hidden": false
+					},
+					"nteract": {
+						"transient": {
+							"deleting": false
+						}
+					},
+					"collapsed": false
+				},
+				"source": [
+					"distinct = spark.sql(\"SELECT * FROM Airbnb2024n WHERE neighbourhood_group IN ('Manhattan', 'Bronx', 'Brooklyn', 'Staten Island', 'Queens')\")\r\n",
+					"CreateSqltb(distinct, \"Airbnb2024new\")\r\n",
+					""
+				],
+				"execution_count": 3
+			},
+			{
+				"cell_type": "markdown",
+				"metadata": {
+					"nteract": {
+						"transient": {
+							"deleting": false
+						}
+					}
+				},
+				"source": [
+					"# Select only the most common room type in 2023 datasets"
+				]
+			},
+			{
+				"cell_type": "code",
+				"metadata": {
+					"jupyter": {
+						"source_hidden": false,
+						"outputs_hidden": false
+					},
+					"nteract": {
+						"transient": {
+							"deleting": false
+						}
+					},
+					"collapsed": false
+				},
+				"source": [
+					"Roomclean = spark.sql(\" Select * from Airbnb2023n WHERE room_type IN ('Shared room', 'Hotel room', 'Entire home/apt', 'Private room')\")\r\n",
+					"CreateSqltb(Roomclean, \"Airbnb2023new\")"
+				],
+				"execution_count": 4
+			},
+			{
+				"cell_type": "markdown",
+				"metadata": {
+					"nteract": {
+						"transient": {
+							"deleting": false
+						}
+					}
+				},
+				"source": [
+					"# Select Only 5 major neigbourhood Groups 2019"
+				]
+			},
+			{
+				"cell_type": "code",
+				"metadata": {
+					"jupyter": {
+						"source_hidden": false,
+						"outputs_hidden": false
+					},
+					"nteract": {
+						"transient": {
+							"deleting": false
+						}
+					}
+				},
+				"source": [
+					"neighbourhoodclean = spark.sql(\" Select * from Airbnb2019n WHERE neighbourhood_group IN('Queens','Brooklyn','Staten Island','Manhattan','Bronx')\")\r\n",
+					"CreateSqltb(neighbourhoodclean, \"Airbnb2019New\")"
+				],
+				"execution_count": 5
+			},
+			{
+				"cell_type": "markdown",
+				"metadata": {
+					"nteract": {
+						"transient": {
+							"deleting": false
+						}
+					}
+				},
+				"source": [
+					"# Write Transformed Dataset into an Azure Datalake"
+				]
+			},
+			{
+				"cell_type": "code",
+				"metadata": {
+					"jupyter": {
+						"source_hidden": false,
+						"outputs_hidden": false
+					},
+					"nteract": {
+						"transient": {
+							"deleting": false
+						}
+					},
+					"tags": [
+						"parameters"
+					]
+				},
+				"source": [
+					"import uuid\r\n",
+					"\r\n",
+					"# Generate random GUID\r\n",
+					"runId = uuid.uuid4()"
+				],
+				"execution_count": 6
+			},
+			{
+				"cell_type": "code",
+				"metadata": {
+					"jupyter": {
+						"source_hidden": false,
+						"outputs_hidden": false
+					},
+					"nteract": {
+						"transient": {
+							"deleting": false
+						}
+					}
+				},
+				"source": [
+					"def write_dataset(dataset, filename, runId):\r\n",
+					"    output_path = 'abfss://ffs@abdatalake.dfs.core.windows.net/Transformed Datasets/' + filename + str(runId)\r\n",
+					"    dataset.coalesce(1).write.format('csv').mode('overwrite').option('header',True).save(output_path)"
+				],
+				"execution_count": 7
+			},
+			{
+				"cell_type": "code",
+				"metadata": {
+					"jupyter": {
+						"source_hidden": false,
+						"outputs_hidden": false
+					},
+					"nteract": {
+						"transient": {
+							"deleting": false
+						}
+					}
+				},
+				"source": [
+					"write_dataset(distinct, '2024.csv',runId)\r\n",
+					"write_dataset(Roomclean, '2023.csv',runId)\r\n",
+					"write_dataset(neighbourhoodclean, '2019.csv',runId)\r\n",
+					""
+				],
+				"execution_count": 8
+			},
+			{
+				"cell_type": "code",
+				"metadata": {
+					"jupyter": {
+						"source_hidden": false,
+						"outputs_hidden": false
+					},
+					"nteract": {
+						"transient": {
+							"deleting": false
+						}
+					}
+				},
+				"source": [
+					""
+				],
+				"execution_count": null
+			}
+		]
+	}
+}

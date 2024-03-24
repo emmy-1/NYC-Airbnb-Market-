@@ -1,0 +1,17 @@
+{
+	"name": "SQL script 1",
+	"properties": {
+		"content": {
+			"query": "SELECT TOP (100) [id]\n,[Name]\n,[Host_id]\n,[Host_name]\n,[Neighborhood_Group]\n,[Neighborhood]\n,[Latitude]\n,[Longitude]\n,[Room_type]\n,[Price]\n,[Minimum_nights]\n,[Number_of_reviews]\n,[Reviews_per_month]\n,[Calculated_host_listings_count]\n,[Availability]\n FROM [AirbnbDatalake].[dbo].[2019]",
+			"metadata": {
+				"language": "sql"
+			},
+			"currentConnection": {
+				"databaseName": "AirbnbDatalake",
+				"poolName": "Built-in"
+			},
+			"resultLimit": 5000
+		},
+		"type": "SqlQuery"
+	}
+}

@@ -1,5 +1,5 @@
 {
-	"name": "2019",
+	"name": "sparkdb2023",
 	"properties": {
 		"linkedServiceName": {
 			"referenceName": "AzureDataLakeStorage",
@@ -10,20 +10,17 @@
 		"typeProperties": {
 			"location": {
 				"type": "AzureBlobFSLocation",
-				"fileName": "2019.csv",
-				"folderPath": "Raw Datasets",
+				"fileName": "part-00000-7a41afd4-21f0-4039-ae48-372bb19216fd-c000.csv",
+				"folderPath": "Transformed Datasets/2023.csv1f075b85-9ca3-444d-8325-ef925b052be8",
 				"fileSystem": "ffs"
 			},
 			"columnDelimiter": ",",
-			"escapeChar": "\"",
+			"rowDelimiter": "\n",
+			"escapeChar": "\\",
 			"firstRowAsHeader": true,
 			"quoteChar": "\""
 		},
 		"schema": [
-			{
-				"name": "Prop_0",
-				"type": "String"
-			},
 			{
 				"name": "id",
 				"type": "String"
@@ -78,10 +75,6 @@
 			},
 			{
 				"name": "number_of_reviews",
-				"type": "String"
-			},
-			{
-				"name": "last_review",
 				"type": "String"
 			},
 			{

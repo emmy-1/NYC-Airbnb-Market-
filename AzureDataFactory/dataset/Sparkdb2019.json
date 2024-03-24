@@ -1,5 +1,5 @@
 {
-	"name": "2019",
+	"name": "Sparkdb2019",
 	"properties": {
 		"linkedServiceName": {
 			"referenceName": "AzureDataLakeStorage",
@@ -10,30 +10,23 @@
 		"typeProperties": {
 			"location": {
 				"type": "AzureBlobFSLocation",
-				"fileName": "2019.csv",
-				"folderPath": "Raw Datasets",
+				"fileName": "part-00000-c0788d2b-8146-4192-aa6a-01a50f2f4797-c000.csv",
+				"folderPath": "Transformed Datasets/2019.csv1f075b85-9ca3-444d-8325-ef925b052be8",
 				"fileSystem": "ffs"
 			},
 			"columnDelimiter": ",",
-			"escapeChar": "\"",
+			"rowDelimiter": "\n",
+			"escapeChar": "\\",
 			"firstRowAsHeader": true,
 			"quoteChar": "\""
 		},
 		"schema": [
-			{
-				"name": "Prop_0",
-				"type": "String"
-			},
 			{
 				"name": "id",
 				"type": "String"
 			},
 			{
 				"name": "name",
-				"type": "String"
-			},
-			{
-				"name": "description",
 				"type": "String"
 			},
 			{
@@ -45,11 +38,11 @@
 				"type": "String"
 			},
 			{
-				"name": "neighbourhood",
+				"name": "neighbourhood_group",
 				"type": "String"
 			},
 			{
-				"name": "neighbourhood_group",
+				"name": "neighbourhood",
 				"type": "String"
 			},
 			{
@@ -58,10 +51,6 @@
 			},
 			{
 				"name": "longitude",
-				"type": "String"
-			},
-			{
-				"name": "property_type",
 				"type": "String"
 			},
 			{
@@ -78,10 +67,6 @@
 			},
 			{
 				"name": "number_of_reviews",
-				"type": "String"
-			},
-			{
-				"name": "last_review",
 				"type": "String"
 			},
 			{

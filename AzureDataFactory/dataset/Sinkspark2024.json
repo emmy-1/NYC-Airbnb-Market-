@@ -1,19 +1,22 @@
 {
-	"name": "AB2023",
+	"name": "Sinkspark2024",
 	"properties": {
 		"linkedServiceName": {
-			"referenceName": "HttpServer2",
+			"referenceName": "AzureDataLakeStorage",
 			"type": "LinkedServiceReference"
 		},
 		"annotations": [],
 		"type": "DelimitedText",
 		"typeProperties": {
 			"location": {
-				"type": "HttpServerLocation"
+				"type": "AzureBlobFSLocation",
+				"fileName": "2024.csv",
+				"folderPath": "AirbnbDatalake/2024",
+				"fileSystem": "ffs"
 			},
 			"columnDelimiter": ",",
 			"rowDelimiter": "\n",
-			"escapeChar": "\"",
+			"escapeChar": "\\",
 			"firstRowAsHeader": true,
 			"quoteChar": "\""
 		},
