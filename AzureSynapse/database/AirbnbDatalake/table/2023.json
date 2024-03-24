@@ -41,19 +41,6 @@
 					"DeltaFormatInvalidMessages": []
 				},
 				{
-					"Name": "Host_id",
-					"Description": "unique identifier for the host of the Airbnb listing.",
-					"OriginDataTypeName": {
-						"TypeName": "long",
-						"IsComplexType": false,
-						"IsNullable": false,
-						"Properties": {
-							"HIVE_TYPE_STRING": "long"
-						}
-					},
-					"DeltaFormatInvalidMessages": []
-				},
-				{
 					"Name": "Host_name",
 					"Description": "name of the host associated with the listing.",
 					"OriginDataTypeName": {
@@ -264,7 +251,7 @@
 		"Properties": {
 			"Description": "",
 			"DisplayFolderInfo": "{\"name\":\"Others\",\"colorCode\":\"\"}",
-			"PrimaryKeys": "id,Host_id",
+			"PrimaryKeys": "id",
 			"spark.sql.sources.provider": "csv"
 		},
 		"Retention": 0,
