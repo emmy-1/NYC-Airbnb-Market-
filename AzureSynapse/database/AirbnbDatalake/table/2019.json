@@ -19,7 +19,7 @@
 					"OriginDataTypeName": {
 						"TypeName": "integer",
 						"IsComplexType": false,
-						"IsNullable": false,
+						"IsNullable": true,
 						"Properties": {
 							"HIVE_TYPE_STRING": "integer"
 						}
@@ -250,7 +250,7 @@
 		"Properties": {
 			"Description": "",
 			"DisplayFolderInfo": "{\"name\":\"Others\",\"colorCode\":\"\"}",
-			"PrimaryKeys": "id,Host_id",
+			"PrimaryKeys": "Host_id",
 			"spark.sql.sources.provider": "csv"
 		},
 		"Retention": 0,
