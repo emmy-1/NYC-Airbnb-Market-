@@ -1,0 +1,1048 @@
+{
+	"$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+	"contentVersion": "1.0.0.0",
+	"parameters": {
+		"factoryName": {
+			"type": "string",
+			"metadata": "Data Factory name",
+			"defaultValue": "airbnbdataFA"
+		}
+	},
+	"variables": {
+		"factoryId": "[concat('Microsoft.DataFactory/factories/', parameters('factoryName'))]"
+	},
+	"resources": [
+		{
+			"name": "[concat(parameters('factoryName'), '/AB_NYC Pipline')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"description": "This Datapipline Extracts, Transforms and load the airbnb pipline from 2019 to 2024.",
+				"activities": [
+					{
+						"name": "AB_2024 Copy Activity",
+						"description": "This copy activity sources the airbnb 2024 datasets from the NYC Market trend repo and  sinks into a azure gen2 datalake",
+						"type": "Copy",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "DelimitedTextSource",
+								"storeSettings": {
+									"type": "HttpReadSettings",
+									"requestMethod": "GET"
+								},
+								"formatSettings": {
+									"type": "DelimitedTextReadSettings"
+								}
+							},
+							"sink": {
+								"type": "DelimitedTextSink",
+								"storeSettings": {
+									"type": "AzureBlobFSWriteSettings"
+								},
+								"formatSettings": {
+									"type": "DelimitedTextWriteSettings",
+									"quoteAllText": true,
+									"fileExtension": ".txt"
+								}
+							},
+							"enableStaging": false,
+							"translator": {
+								"type": "TabularTranslator",
+								"mappings": [
+									{
+										"source": {
+											"name": "id",
+											"type": "Int64",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "id",
+											"type": "String",
+											"physicalType": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "name",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "name",
+											"type": "String",
+											"physicalType": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "description",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "description",
+											"type": "String",
+											"physicalType": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "host_id",
+											"type": "Int32",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "host_id",
+											"type": "String",
+											"physicalType": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "host_name",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "host_name",
+											"type": "String",
+											"physicalType": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "neighbourhood",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "neighbourhood",
+											"type": "String",
+											"physicalType": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "neighbourhood_group",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "neighbourhood_group",
+											"type": "String",
+											"physicalType": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "latitude",
+											"type": "Double",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "latitude",
+											"type": "String",
+											"physicalType": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "longitude",
+											"type": "Double",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "longitude",
+											"type": "String",
+											"physicalType": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "property_type",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "property_type",
+											"type": "String",
+											"physicalType": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "room_type",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "room_type",
+											"type": "String",
+											"physicalType": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "price",
+											"type": "Int32",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "price",
+											"type": "String",
+											"physicalType": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "minimum_nights",
+											"type": "Int32",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "minimum_nights",
+											"type": "String",
+											"physicalType": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "number_of_reviews",
+											"type": "Int32",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "number_of_reviews",
+											"type": "String",
+											"physicalType": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "calculated_host_listings_count",
+											"type": "Int32",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "calculated_host_listings_count",
+											"type": "String",
+											"physicalType": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "availability_365",
+											"type": "Int32",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "availability_365",
+											"type": "String",
+											"physicalType": "String"
+										}
+									}
+								],
+								"typeConversion": true,
+								"typeConversionSettings": {
+									"allowDataTruncation": true,
+									"treatBooleanAsNumber": false
+								}
+							}
+						},
+						"inputs": [
+							{
+								"referenceName": "AB2024",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "2024",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						]
+					},
+					{
+						"name": "Wait 2 Sec",
+						"description": "Wait 2 seconds after a copy activity.",
+						"type": "Wait",
+						"dependsOn": [
+							{
+								"activity": "AB_2024 Copy Activity",
+								"dependencyConditions": [
+									"Completed"
+								]
+							}
+						],
+						"userProperties": [],
+						"typeProperties": {
+							"waitTimeInSeconds": 1
+						}
+					},
+					{
+						"name": "AB_2023 Copy Activity",
+						"description": "This copy activity sources the airbnb 2023 datasets from the NYC Market trend repo and  sinks into a azure gen2 datalake",
+						"type": "Copy",
+						"dependsOn": [
+							{
+								"activity": "Wait 2 Sec",
+								"dependencyConditions": [
+									"Completed"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "DelimitedTextSource",
+								"storeSettings": {
+									"type": "HttpReadSettings",
+									"requestMethod": "GET"
+								},
+								"formatSettings": {
+									"type": "DelimitedTextReadSettings"
+								}
+							},
+							"sink": {
+								"type": "DelimitedTextSink",
+								"storeSettings": {
+									"type": "AzureBlobFSWriteSettings"
+								},
+								"formatSettings": {
+									"type": "DelimitedTextWriteSettings",
+									"quoteAllText": true,
+									"fileExtension": ".txt"
+								}
+							},
+							"enableStaging": false,
+							"translator": {
+								"type": "TabularTranslator",
+								"mappings": [
+									{
+										"source": {
+											"name": "id",
+											"type": "Int64",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "id",
+											"type": "String",
+											"physicalType": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "name",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "name",
+											"type": "String",
+											"physicalType": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "description",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "description",
+											"type": "String",
+											"physicalType": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "host_id",
+											"type": "Int32",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "host_id",
+											"type": "String",
+											"physicalType": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "host_name",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "host_name",
+											"type": "String",
+											"physicalType": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "neighbourhood",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "neighbourhood",
+											"type": "String",
+											"physicalType": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "neighbourhood_group",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "neighbourhood_group",
+											"type": "String",
+											"physicalType": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "latitude",
+											"type": "Double",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "latitude",
+											"type": "String",
+											"physicalType": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "longitude",
+											"type": "Double",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "longitude",
+											"type": "String",
+											"physicalType": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "property_type",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "property_type",
+											"type": "String",
+											"physicalType": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "room_type",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "room_type",
+											"type": "String",
+											"physicalType": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "price",
+											"type": "Int32",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "price",
+											"type": "String",
+											"physicalType": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "minimum_nights",
+											"type": "Int32",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "minimum_nights",
+											"type": "String",
+											"physicalType": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "number_of_reviews",
+											"type": "Int32",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "number_of_reviews",
+											"type": "String",
+											"physicalType": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "calculated_host_listings_count",
+											"type": "Int32",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "calculated_host_listings_count",
+											"type": "String",
+											"physicalType": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "availability_365",
+											"type": "Int32",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "availability_365",
+											"type": "String",
+											"physicalType": "String"
+										}
+									}
+								],
+								"typeConversion": true,
+								"typeConversionSettings": {
+									"allowDataTruncation": true,
+									"treatBooleanAsNumber": false
+								}
+							}
+						},
+						"inputs": [
+							{
+								"referenceName": "AB2023",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "2023",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						]
+					},
+					{
+						"name": "Wait 3 Sec_",
+						"description": "Wait 3 seconds after a copy activity.",
+						"type": "Wait",
+						"dependsOn": [
+							{
+								"activity": "AB_2023 Copy Activity",
+								"dependencyConditions": [
+									"Completed"
+								]
+							}
+						],
+						"userProperties": [],
+						"typeProperties": {
+							"waitTimeInSeconds": 1
+						}
+					},
+					{
+						"name": "AB_2019 Copy Activity",
+						"description": "This copy activity sources the airbnb 2019 datasets from the NYC Market trend repo and  sinks into a azure gen2 datalake",
+						"type": "Copy",
+						"dependsOn": [
+							{
+								"activity": "Wait 3 Sec_",
+								"dependencyConditions": [
+									"Completed"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "DelimitedTextSource",
+								"storeSettings": {
+									"type": "HttpReadSettings",
+									"requestMethod": "GET"
+								},
+								"formatSettings": {
+									"type": "DelimitedTextReadSettings"
+								}
+							},
+							"sink": {
+								"type": "DelimitedTextSink",
+								"storeSettings": {
+									"type": "AzureBlobFSWriteSettings"
+								},
+								"formatSettings": {
+									"type": "DelimitedTextWriteSettings",
+									"quoteAllText": true,
+									"fileExtension": ".txt"
+								}
+							},
+							"enableStaging": false,
+							"translator": {
+								"type": "TabularTranslator",
+								"mappings": [
+									{
+										"source": {
+											"name": "id",
+											"type": "Int64",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "id",
+											"type": "String",
+											"physicalType": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "name",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "name",
+											"type": "String",
+											"physicalType": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "host_id",
+											"type": "Int32",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "host_id",
+											"type": "String",
+											"physicalType": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "host_name",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "host_name",
+											"type": "String",
+											"physicalType": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "neighbourhood_group",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "neighbourhood_group",
+											"type": "String",
+											"physicalType": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "neighbourhood",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "neighbourhood",
+											"type": "String",
+											"physicalType": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "latitude",
+											"type": "Double",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "latitude",
+											"type": "String",
+											"physicalType": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "longitude",
+											"type": "Double",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "longitude",
+											"type": "String",
+											"physicalType": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "room_type",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "room_type",
+											"type": "String",
+											"physicalType": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "price",
+											"type": "Int32",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "price",
+											"type": "String",
+											"physicalType": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "minimum_nights",
+											"type": "Int32",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "minimum_nights",
+											"type": "String",
+											"physicalType": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "number_of_reviews",
+											"type": "Int32",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "number_of_reviews",
+											"type": "String",
+											"physicalType": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "calculated_host_listings_count",
+											"type": "Int32",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "calculated_host_listings_count",
+											"type": "String",
+											"physicalType": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "availability_365",
+											"type": "Int32",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "availability_365",
+											"type": "String",
+											"physicalType": "String"
+										}
+									}
+								],
+								"typeConversion": true,
+								"typeConversionSettings": {
+									"allowDataTruncation": true,
+									"treatBooleanAsNumber": false
+								}
+							}
+						},
+						"inputs": [
+							{
+								"referenceName": "AB2019",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "2019",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						]
+					},
+					{
+						"name": "Note Book hold time",
+						"type": "Wait",
+						"dependsOn": [
+							{
+								"activity": "AB_2019 Copy Activity",
+								"dependencyConditions": [
+									"Completed"
+								]
+							}
+						],
+						"userProperties": [],
+						"typeProperties": {
+							"waitTimeInSeconds": 3
+						}
+					},
+					{
+						"name": "Airbnb Transformation",
+						"type": "SynapseNotebook",
+						"dependsOn": [
+							{
+								"activity": "Note Book hold time",
+								"dependencyConditions": [
+									"Completed"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"notebook": {
+								"referenceName": {
+									"value": "Airbnb Transformation",
+									"type": "Expression"
+								},
+								"type": "NotebookReference"
+							},
+							"parameters": {
+								"runId": {
+									"value": {
+										"value": "@pipeline().RunId",
+										"type": "Expression"
+									},
+									"type": "string"
+								}
+							},
+							"snapshot": true,
+							"sparkPool": {
+								"referenceName": {
+									"value": "newspaarkpool",
+									"type": "Expression"
+								},
+								"type": "BigDataPoolReference"
+							},
+							"executorSize": "Small",
+							"conf": {
+								"spark.dynamicAllocation.enabled": false,
+								"spark.dynamicAllocation.minExecutors": null,
+								"spark.dynamicAllocation.maxExecutors": null
+							},
+							"driverSize": "Small",
+							"numExecutors": null
+						},
+						"linkedServiceName": {
+							"referenceName": "AzureSynapseArtifacts1",
+							"type": "LinkedServiceReference"
+						}
+					},
+					{
+						"name": "2023 Power Query",
+						"description": "This Power Query activity sources the airbnb 2024 datasets from the NYC Market trend repo and  sinks into a azure gen2 datalake",
+						"type": "ExecuteWranglingDataflow",
+						"dependsOn": [
+							{
+								"activity": "2024 Transformation",
+								"dependencyConditions": [
+									"Completed"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"dataflow": {
+								"referenceName": "2023",
+								"type": "DataFlowReference",
+								"datasetParameters": {
+									"sparkdb2023": {},
+									"UserQueryNYC2023": {}
+								}
+							},
+							"staging": {},
+							"compute": {
+								"coreCount": 8,
+								"computeType": "General"
+							},
+							"queries": [
+								{
+									"queryName": "UserQuery",
+									"dataflowSinks": [
+										{
+											"name": "UserQueryNYC2023",
+											"dataset": {
+												"referenceName": "NYC2023",
+												"type": "DatasetReference",
+												"parameters": {}
+											},
+											"script": "sink(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tinput(\n\t\tid as string,\n\t\tname as string,\n\t\tdescription as string,\n\t\thost_id as string,\n\t\thost_name as string,\n\t\tneighbourhood as string,\n\t\tneighbourhood_group as string,\n\t\tlatitude as string,\n\t\tlongitude as string,\n\t\tproperty_type as string,\n\t\troom_type as string,\n\t\tprice as string,\n\t\tminimum_nights as string,\n\t\tnumber_of_reviews as string,\n\t\tcalculated_host_listings_count as string,\n\t\tavailability_365 as string\n\t),\n\tumask: 0022,\n\tpreCommands: [],\n\tpostCommands: [],\n\tskipDuplicateMapInputs: true,\n\tskipDuplicateMapOutputs: true) ~> UserQueryNYC2023"
+										}
+									]
+								}
+							]
+						}
+					},
+					{
+						"name": "2024 Transformation",
+						"description": "This Power Query activity sources the airbnb 2024 datasets from the NYC Market trend repo and  sinks into a azure gen2 datalake",
+						"type": "ExecuteWranglingDataflow",
+						"dependsOn": [
+							{
+								"activity": "Airbnb Transformation",
+								"dependencyConditions": [
+									"Completed"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"dataflow": {
+								"referenceName": "2024",
+								"type": "DataFlowReference",
+								"datasetParameters": {
+									"sparkdb2024": {},
+									"UserQueryNYC2024": {}
+								}
+							},
+							"staging": {},
+							"compute": {
+								"coreCount": 8,
+								"computeType": "General"
+							},
+							"queries": [
+								{
+									"queryName": "UserQuery",
+									"dataflowSinks": [
+										{
+											"name": "UserQueryNYC2024",
+											"dataset": {
+												"referenceName": "NYC2024",
+												"type": "DatasetReference",
+												"parameters": {}
+											},
+											"script": "sink(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tinput(\n\t\tid as string,\n\t\tname as string,\n\t\tdescription as string,\n\t\thost_id as string,\n\t\thost_name as string,\n\t\tneighbourhood as string,\n\t\tneighbourhood_group as string,\n\t\tlatitude as string,\n\t\tlongitude as string,\n\t\tproperty_type as string,\n\t\troom_type as string,\n\t\tprice as string,\n\t\tminimum_nights as string,\n\t\tnumber_of_reviews as string,\n\t\tcalculated_host_listings_count as string,\n\t\tavailability_365 as string\n\t),\n\tumask: 0022,\n\tpreCommands: [],\n\tpostCommands: [],\n\tskipDuplicateMapInputs: true,\n\tskipDuplicateMapOutputs: true) ~> UserQueryNYC2024"
+										}
+									]
+								}
+							]
+						}
+					},
+					{
+						"name": "2019 Query",
+						"description": "This Power Query activity sources the airbnb 2019 datasets from the NYC Market trend repo and  sinks into a azure gen2 datalake",
+						"type": "ExecuteWranglingDataflow",
+						"dependsOn": [
+							{
+								"activity": "2023 Power Query",
+								"dependencyConditions": [
+									"Completed"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"dataflow": {
+								"referenceName": "2019",
+								"type": "DataFlowReference",
+								"datasetParameters": {
+									"Sparkdb2019": {},
+									"UserQueryNYC2019": {}
+								}
+							},
+							"staging": {},
+							"compute": {
+								"coreCount": 8,
+								"computeType": "General"
+							},
+							"queries": [
+								{
+									"queryName": "UserQuery",
+									"dataflowSinks": [
+										{
+											"name": "UserQueryNYC2019",
+											"dataset": {
+												"referenceName": "NYC2019",
+												"type": "DatasetReference",
+												"parameters": {}
+											},
+											"script": "sink(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tinput(\n\t\tid as string,\n\t\tname as string,\n\t\thost_id as string,\n\t\thost_name as string,\n\t\tneighbourhood_group as string,\n\t\tneighbourhood as string,\n\t\tlatitude as string,\n\t\tlongitude as string,\n\t\troom_type as string,\n\t\tprice as string,\n\t\tminimum_nights as string,\n\t\tnumber_of_reviews as string,\n\t\tcalculated_host_listings_count as string,\n\t\tavailability_365 as string,\n\t\t{Unnamed: 14} as string,\n\t\t{Unnamed: 15} as string,\n\t\t{Unnamed: 16} as string\n\t),\n\tumask: 0022,\n\tpreCommands: [],\n\tpostCommands: [],\n\tskipDuplicateMapInputs: true,\n\tskipDuplicateMapOutputs: true) ~> UserQueryNYC2019"
+										}
+									]
+								}
+							]
+						}
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {}
+				},
+				"annotations": [],
+				"lastPublishTime": "2024-03-18T23:34:49Z"
+			},
+			"dependsOn": []
+		}
+	]
+}

@@ -11,6 +11,9 @@
 		"AzureDataLakeStorage_properties_typeProperties_url": {
 			"value": "https://abdatalake.dfs.core.windows.net/"
 		},
+		"AzureSynapseArtifacts1_properties_typeProperties_endpoint": {
+			"value": "https://airbnbworkspace.dev.azuresynapse.net"
+		},
 		"HttpServer2_properties_typeProperties_url": {
 			"value": "https://raw.githubusercontent.com/emmy-1/NYC-Airbnb-Market-/main/Airbnb/Transformed%20Data/_AB_NYC_2023.csv"
 		},

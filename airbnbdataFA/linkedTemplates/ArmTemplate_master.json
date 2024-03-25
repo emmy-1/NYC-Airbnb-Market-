@@ -15,6 +15,10 @@
 			"type": "string",
 			"defaultValue": "https://abdatalake.dfs.core.windows.net/"
 		},
+		"AzureSynapseArtifacts1_properties_typeProperties_endpoint": {
+			"type": "string",
+			"defaultValue": "https://airbnbworkspace.dev.azuresynapse.net"
+		},
 		"HttpServer2_properties_typeProperties_url": {
 			"type": "string",
 			"defaultValue": "https://raw.githubusercontent.com/emmy-1/NYC-Airbnb-Market-/main/Airbnb/Transformed%20Data/_AB_NYC_2023.csv"
@@ -60,6 +64,9 @@
 					"AzureDataLakeStorage_properties_typeProperties_url": {
 						"value": "[parameters('AzureDataLakeStorage_properties_typeProperties_url')]"
 					},
+					"AzureSynapseArtifacts1_properties_typeProperties_endpoint": {
+						"value": "[parameters('AzureSynapseArtifacts1_properties_typeProperties_endpoint')]"
+					},
 					"HttpServer2_properties_typeProperties_url": {
 						"value": "[parameters('HttpServer2_properties_typeProperties_url')]"
 					},
@@ -72,6 +79,26 @@
 				}
 			},
 			"dependsOn": []
+		},
+		{
+			"name": "airbnbdataFA_ArmTemplate_1",
+			"type": "Microsoft.Resources/deployments",
+			"apiVersion": "2018-02-01",
+			"properties": {
+				"mode": "incremental",
+				"templateLink": {
+					"uri": "[concat(parameters('containerUri'), '/ArmTemplate_1.json', parameters('containerSasToken'))]",
+					"contentVersion": "1.0.0.0"
+				},
+				"parameters": {
+					"factoryName": {
+						"value": "[parameters('factoryName')]"
+					}
+				}
+			},
+			"dependsOn": [
+				"[resourceId('Microsoft.Resources/deployments', 'airbnbdataFA_ArmTemplate_0')]"
+			]
 		}
 	]
 }
