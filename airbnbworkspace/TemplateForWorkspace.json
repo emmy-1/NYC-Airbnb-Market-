@@ -114,26 +114,6 @@
 			"dependsOn": []
 		},
 		{
-			"name": "[concat(parameters('workspaceName'), '/SQL script 1')]",
-			"type": "Microsoft.Synapse/workspaces/sqlscripts",
-			"apiVersion": "2019-06-01-preview",
-			"properties": {
-				"content": {
-					"query": "SELECT [id]\n,[Name]\n,[Host_id]\n,[Host_name]\n,[Neighborhood_Group]\n,[Neighborhood]\n,[Latitude]\n,[Longitude]\n,[Room_type]\n,[Price]\n,[Minimum_nights]\n,[Number_of_reviews]\n,[Reviews_per_month]\n,[Calculated_host_listings_count]\n,[Availability]\n FROM [AirbnbDatalake].[dbo].[2023]",
-					"metadata": {
-						"language": "sql"
-					},
-					"currentConnection": {
-						"databaseName": "AirbnbDatalake",
-						"poolName": "Built-in"
-					},
-					"resultLimit": 5000
-				},
-				"type": "SqlQuery"
-			},
-			"dependsOn": []
-		},
-		{
 			"name": "[concat(parameters('workspaceName'), '/Airbnb Transformation')]",
 			"type": "Microsoft.Synapse/workspaces/notebooks",
 			"apiVersion": "2019-06-01-preview",
@@ -859,12 +839,11 @@
 										"Name": "Host_id",
 										"Description": "unique identifier for the host of the Airbnb listing.",
 										"OriginDataTypeName": {
-											"TypeName": "string",
+											"TypeName": "long",
 											"IsComplexType": false,
 											"IsNullable": false,
-											"Length": 256,
 											"Properties": {
-												"HIVE_TYPE_STRING": "string"
+												"HIVE_TYPE_STRING": "long"
 											}
 										},
 										"DeltaFormatInvalidMessages": []
@@ -876,7 +855,7 @@
 											"TypeName": "string",
 											"IsComplexType": false,
 											"IsNullable": true,
-											"Length": 400,
+											"Length": 256,
 											"Properties": {
 												"HIVE_TYPE_STRING": "string"
 											}
@@ -915,12 +894,11 @@
 										"Name": "Latitude",
 										"Description": "geographic coordinates of the listing.",
 										"OriginDataTypeName": {
-											"TypeName": "string",
+											"TypeName": "float",
 											"IsComplexType": false,
 											"IsNullable": true,
-											"Length": 256,
 											"Properties": {
-												"HIVE_TYPE_STRING": "string"
+												"HIVE_TYPE_STRING": "float"
 											}
 										},
 										"DeltaFormatInvalidMessages": []
@@ -929,12 +907,11 @@
 										"Name": "Longitude",
 										"Description": "geographic coordinates of the listing.",
 										"OriginDataTypeName": {
-											"TypeName": "string",
+											"TypeName": "float",
 											"IsComplexType": false,
 											"IsNullable": true,
-											"Length": 256,
 											"Properties": {
-												"HIVE_TYPE_STRING": "string"
+												"HIVE_TYPE_STRING": "float"
 											}
 										},
 										"DeltaFormatInvalidMessages": []
@@ -1073,7 +1050,8 @@
 							},
 							"Retention": 0,
 							"Temporary": false,
-							"IsRewriteEnabled": false
+							"IsRewriteEnabled": false,
+							"Partitioning": {}
 						},
 						"Source": {
 							"Type": "SPARK"
