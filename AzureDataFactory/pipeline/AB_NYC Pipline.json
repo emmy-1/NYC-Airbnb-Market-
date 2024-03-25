@@ -858,209 +858,12 @@
 				}
 			},
 			{
-				"name": "AB_2024 Copy Activity_copy1",
-				"description": "This copy activity sources the airbnb 2024 datasets from the NYC Market trend repo and  sinks into a azure gen2 datalake",
-				"type": "Copy",
-				"dependsOn": [
-					{
-						"activity": "Airbnb Transformation",
-						"dependencyConditions": [
-							"Completed"
-						]
-					}
-				],
-				"policy": {
-					"timeout": "0.12:00:00",
-					"retry": 0,
-					"retryIntervalInSeconds": 30,
-					"secureOutput": false,
-					"secureInput": false
-				},
-				"userProperties": [],
-				"typeProperties": {
-					"source": {
-						"type": "DelimitedTextSource",
-						"storeSettings": {
-							"type": "AzureBlobFSReadSettings",
-							"recursive": true,
-							"enablePartitionDiscovery": false
-						},
-						"formatSettings": {
-							"type": "DelimitedTextReadSettings"
-						}
-					},
-					"sink": {
-						"type": "DelimitedTextSink",
-						"storeSettings": {
-							"type": "AzureBlobFSWriteSettings"
-						},
-						"formatSettings": {
-							"type": "DelimitedTextWriteSettings",
-							"quoteAllText": true,
-							"fileExtension": ".txt"
-						}
-					},
-					"enableStaging": false,
-					"translator": {
-						"type": "TabularTranslator",
-						"typeConversion": true,
-						"typeConversionSettings": {
-							"allowDataTruncation": true,
-							"treatBooleanAsNumber": false
-						}
-					}
-				},
-				"inputs": [
-					{
-						"referenceName": "sparkdb2024",
-						"type": "DatasetReference"
-					}
-				],
-				"outputs": [
-					{
-						"referenceName": "Sinkspark2024",
-						"type": "DatasetReference"
-					}
-				]
-			},
-			{
-				"name": "AB_2023 Copy Activity_copy1",
-				"description": "This copy activity sources the airbnb 2023 datasets from the NYC Market trend repo and  sinks into a azure gen2 datalake",
-				"type": "Copy",
-				"dependsOn": [
-					{
-						"activity": "2024 Transformation",
-						"dependencyConditions": [
-							"Completed"
-						]
-					}
-				],
-				"policy": {
-					"timeout": "0.12:00:00",
-					"retry": 0,
-					"retryIntervalInSeconds": 30,
-					"secureOutput": false,
-					"secureInput": false
-				},
-				"userProperties": [],
-				"typeProperties": {
-					"source": {
-						"type": "DelimitedTextSource",
-						"storeSettings": {
-							"type": "AzureBlobFSReadSettings",
-							"recursive": true,
-							"enablePartitionDiscovery": false
-						},
-						"formatSettings": {
-							"type": "DelimitedTextReadSettings"
-						}
-					},
-					"sink": {
-						"type": "DelimitedTextSink",
-						"storeSettings": {
-							"type": "AzureBlobFSWriteSettings"
-						},
-						"formatSettings": {
-							"type": "DelimitedTextWriteSettings",
-							"quoteAllText": true,
-							"fileExtension": ".txt"
-						}
-					},
-					"enableStaging": false,
-					"translator": {
-						"type": "TabularTranslator",
-						"typeConversion": true,
-						"typeConversionSettings": {
-							"allowDataTruncation": true,
-							"treatBooleanAsNumber": false
-						}
-					}
-				},
-				"inputs": [
-					{
-						"referenceName": "sparkdb2023",
-						"type": "DatasetReference"
-					}
-				],
-				"outputs": [
-					{
-						"referenceName": "Sinkspark2023",
-						"type": "DatasetReference"
-					}
-				]
-			},
-			{
-				"name": "AB_2019 Copy Activity_copy1",
-				"description": "This copy activity sources the airbnb 2019 datasets from the NYC Market trend repo and  sinks into a azure gen2 datalake",
-				"type": "Copy",
-				"dependsOn": [
-					{
-						"activity": "2023 Power Query",
-						"dependencyConditions": [
-							"Completed"
-						]
-					}
-				],
-				"policy": {
-					"timeout": "0.12:00:00",
-					"retry": 0,
-					"retryIntervalInSeconds": 30,
-					"secureOutput": false,
-					"secureInput": false
-				},
-				"userProperties": [],
-				"typeProperties": {
-					"source": {
-						"type": "DelimitedTextSource",
-						"storeSettings": {
-							"type": "AzureBlobFSReadSettings",
-							"recursive": true,
-							"enablePartitionDiscovery": false
-						},
-						"formatSettings": {
-							"type": "DelimitedTextReadSettings"
-						}
-					},
-					"sink": {
-						"type": "DelimitedTextSink",
-						"storeSettings": {
-							"type": "AzureBlobFSWriteSettings"
-						},
-						"formatSettings": {
-							"type": "DelimitedTextWriteSettings",
-							"quoteAllText": true,
-							"fileExtension": ".txt"
-						}
-					},
-					"enableStaging": false,
-					"translator": {
-						"type": "TabularTranslator",
-						"typeConversion": true,
-						"typeConversionSettings": {
-							"allowDataTruncation": true,
-							"treatBooleanAsNumber": false
-						}
-					}
-				},
-				"inputs": [
-					{
-						"referenceName": "Sparkdb2019",
-						"type": "DatasetReference"
-					}
-				],
-				"outputs": [
-					{
-						"referenceName": "Sinkspark2019",
-						"type": "DatasetReference"
-					}
-				]
-			},
-			{
 				"name": "2023 Power Query",
+				"description": "This Power Query activity sources the airbnb 2024 datasets from the NYC Market trend repo and  sinks into a azure gen2 datalake",
 				"type": "ExecuteWranglingDataflow",
 				"dependsOn": [
 					{
-						"activity": "AB_2023 Copy Activity_copy1",
+						"activity": "2024 Transformation",
 						"dependencyConditions": [
 							"Completed"
 						]
@@ -1102,10 +905,11 @@
 			},
 			{
 				"name": "2024 Transformation",
+				"description": "This Power Query activity sources the airbnb 2024 datasets from the NYC Market trend repo and  sinks into a azure gen2 datalake",
 				"type": "ExecuteWranglingDataflow",
 				"dependsOn": [
 					{
-						"activity": "AB_2024 Copy Activity_copy1",
+						"activity": "Airbnb Transformation",
 						"dependencyConditions": [
 							"Completed"
 						]
@@ -1147,10 +951,11 @@
 			},
 			{
 				"name": "2019 Query",
+				"description": "This Power Query activity sources the airbnb 2019 datasets from the NYC Market trend repo and  sinks into a azure gen2 datalake",
 				"type": "ExecuteWranglingDataflow",
 				"dependsOn": [
 					{
-						"activity": "AB_2019 Copy Activity_copy1",
+						"activity": "2023 Power Query",
 						"dependencyConditions": [
 							"Completed"
 						]
