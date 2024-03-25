@@ -838,7 +838,7 @@
 					"snapshot": true,
 					"sparkPool": {
 						"referenceName": {
-							"value": "sparknew",
+							"value": "newspaarkpool",
 							"type": "Expression"
 						},
 						"type": "BigDataPoolReference"
