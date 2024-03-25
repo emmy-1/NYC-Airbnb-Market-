@@ -44,11 +44,11 @@
 					"Name": "Host_id",
 					"Description": "",
 					"OriginDataTypeName": {
-						"TypeName": "integer",
+						"TypeName": "long",
 						"IsComplexType": false,
 						"IsNullable": false,
 						"Properties": {
-							"HIVE_TYPE_STRING": "integer"
+							"HIVE_TYPE_STRING": "long"
 						}
 					},
 					"DeltaFormatInvalidMessages": []
@@ -239,7 +239,7 @@
 					"multiLine": "false",
 					"firstRowAsHeader": "true",
 					"serialization.format": "1",
-					"escape": "\\",
+					"escape": "\"",
 					"quote": "\"",
 					"FormatTypeSetToDatabaseDefault": true,
 					"header": "true"
@@ -265,7 +265,8 @@
 			"Description": "",
 			"DisplayFolderInfo": "{\"name\":\"Others\",\"colorCode\":\"\"}",
 			"PrimaryKeys": "id,Host_id",
-			"spark.sql.sources.provider": "csv"
+			"spark.sql.sources.provider": "csv",
+			"sql:IsAppendOnly": false
 		},
 		"Retention": 0,
 		"Temporary": false,
