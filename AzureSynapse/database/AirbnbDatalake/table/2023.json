@@ -100,13 +100,12 @@
 					"Name": "Latitude",
 					"Description": "geographic coordinates of the listing.",
 					"OriginDataTypeName": {
-						"TypeName": "decimal",
+						"TypeName": "string",
 						"IsComplexType": false,
 						"IsNullable": true,
-						"Precision": 18,
-						"Scale": 2,
+						"Length": 256,
 						"Properties": {
-							"HIVE_TYPE_STRING": "decimal"
+							"HIVE_TYPE_STRING": "string"
 						}
 					},
 					"DeltaFormatInvalidMessages": []
@@ -115,13 +114,12 @@
 					"Name": "Longitude",
 					"Description": "geographic coordinates of the listing.",
 					"OriginDataTypeName": {
-						"TypeName": "decimal",
+						"TypeName": "string",
 						"IsComplexType": false,
 						"IsNullable": true,
-						"Precision": 18,
-						"Scale": 2,
+						"Length": 256,
 						"Properties": {
-							"HIVE_TYPE_STRING": "decimal"
+							"HIVE_TYPE_STRING": "string"
 						}
 					},
 					"DeltaFormatInvalidMessages": []
