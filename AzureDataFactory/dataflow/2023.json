@@ -1,0 +1,21 @@
+{
+	"name": "2023",
+	"properties": {
+		"description": "Power Query to Clean the dataset.",
+		"type": "WranglingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"name": "sparkdb2023",
+					"script": "source(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tignoreNoFilesFound: false) ~>  sparkdb2023",
+					"dataset": {
+						"referenceName": "sparkdb2023",
+						"type": "DatasetReference"
+					}
+				}
+			],
+			"script": "section Section1;\r\nshared sparkdb2023 = let AdfDoc = AzureStorage.DataLakeContents(\"https://abdatalake.dfs.core.windows.net/ffs/Transformed Datasets/2023.csvc06b556e-3f68-4d9a-aef4-b9fc3813fcb0/part-00000-067e1dc2-805e-423a-bb6f-1edf70d8146d-c000.csv\"),Csv = Csv.Document(AdfDoc, [Delimiter = \",\", Encoding = TextEncoding.Utf8, QuoteStyle = QuoteStyle.Csv]), PromotedHeaders = Table.PromoteHeaders(Csv, [PromoteAllScalars = true]) in  PromotedHeaders;\r\nshared UserQuery = let Source = #\"sparkdb2023\",\r\n  #\"Changed column type\" = Table.TransformColumnTypes(Source, {{\"id\", Int64.Type}}),\r\n  #\"Extracted first characters\" = Table.TransformColumns(#\"Changed column type\", {{\"id\", each Text.Start(Text.From(_), 4), type text}}),\r\n  #\"Replaced value\" = Table.ReplaceValue(#\"Extracted first characters\", \"\"\"\", \"\", Replacer.ReplaceText, {\"id\", \"name\", \"description\", \"host_id\", \"host_name\", \"neighbourhood\", \"neighbourhood_group\", \"latitude\", \"longitude\", \"property_type\", \"room_type\", \"price\", \"minimum_nights\", \"number_of_reviews\", \"calculated_host_listings_count\", \"availability_365\"}),\r\n  #\"Changed column type 1\" = Table.TransformColumnTypes(#\"Replaced value\", {{\"id\", Int64.Type}, {\"host_id\", Int64.Type}, {\"latitude\", type number}, {\"longitude\", type number}, {\"price\", Int64.Type}, {\"minimum_nights\", Int64.Type}, {\"number_of_reviews\", Int64.Type}, {\"calculated_host_listings_count\", Int64.Type}, {\"availability_365\", Int64.Type}}),\r\n  #\"Extracted text range\" = Table.TransformColumns(#\"Changed column type 1\", {{\"host_id\", each Text.Middle(Text.From(_), 0, 4), type text}}),\r\n  #\"Changed column type 2\" = Table.TransformColumnTypes(#\"Extracted text range\", {{\"host_id\", Int64.Type}}) in #\"Changed column type 2\";\r\n",
+			"documentLocale": "en-us"
+		}
+	}
+}
