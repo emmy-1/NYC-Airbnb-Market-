@@ -94,12 +94,12 @@
 			"dependsOn": []
 		},
 		{
-			"name": "[concat(parameters('workspaceName'), '/SQL script 1')]",
+			"name": "[concat(parameters('workspaceName'), '/2019 Analysis')]",
 			"type": "Microsoft.Synapse/workspaces/sqlscripts",
 			"apiVersion": "2019-06-01-preview",
 			"properties": {
 				"content": {
-					"query": "SELECT TOP (100) [id]\n,[Name]\n,[Host_id]\n,[Host_name]\n,[Neighborhood_Group]\n,[Neighborhood]\n,[Latitude]\n,[Longitude]\n,[Room_type]\n,[Price]\n,[Minimum_nights]\n,[Number_of_reviews]\n,[Reviews_per_month]\n,[Calculated_host_listings_count]\n,[Availability]\n FROM [AirbnbDatalake].[dbo].[2019]",
+					"query": "SELECT [id]\n,[Name]\n,[Host_id]\n,[Host_name]\n,[Neighborhood_Group]\n,[Neighborhood]\n,[Latitude]\n,[Longitude]\n,[Room_type]\n,[Price]\n,[Minimum_nights]\n,[Number_of_reviews]\n,[Reviews_per_month]\n,[Calculated_host_listings_count]\n,[Availability]\n FROM [AirbnbDatalake].[dbo].[2019]",
 					"metadata": {
 						"language": "sql"
 					},
@@ -107,27 +107,7 @@
 						"databaseName": "AirbnbDatalake",
 						"poolName": "Built-in"
 					},
-					"resultLimit": 5000
-				},
-				"type": "SqlQuery"
-			},
-			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('workspaceName'), '/SQL script 2')]",
-			"type": "Microsoft.Synapse/workspaces/sqlscripts",
-			"apiVersion": "2019-06-01-preview",
-			"properties": {
-				"content": {
-					"query": "SELECT * FROM\n    OPENROWSET(\n        BULK 'https://abdatalake.dfs.core.windows.net/ffs/Transformed Datasets/2019.csvd31086f2-e300-49f5-aa5a-30a040c40229/part-00000-94cb97f2-be53-4025-a037-59a41141ebeb-c000.csv',\n        FORMAT = 'CSV',\n        HEADER_ROW = TRUE,\n        PARSER_VERSION = '2.0',\n        FIELDQUOTE = '\"'\n        \n    ) WITH(\n    [id] bigint,\n\t[name] nvarchar(4000) COLLATE Latin1_General_100_CI_AS_SC_UTF8,\n\t[host_id] bigint,\n\t[host_name] nvarchar(4000) COLLATE Latin1_General_100_CI_AS_SC_UTF8,\n\t[neighbourhood_group] nvarchar(4000) COLLATE Latin1_General_100_CI_AS_SC_UTF8,\n\t[neighbourhood] nvarchar(4000) COLLATE Latin1_General_100_CI_AS_SC_UTF8,\n\t[latitude] float,\n\t[longitude] float,\n\t[room_type] nvarchar(4000) COLLATE Latin1_General_100_CI_AS_SC_UTF8,\n\t[price] bigint,\n\t[minimum_nights] bigint,\n\t[number_of_reviews] bigint,\n\t[calculated_host_listings_count] bigint,\n\t[availability_365] bigint\n    )AS [result]",
-					"metadata": {
-						"language": "sql"
-					},
-					"currentConnection": {
-						"databaseName": "master",
-						"poolName": "Built-in"
-					},
-					"resultLimit": 5000
+					"resultLimit": -1
 				},
 				"type": "SqlQuery"
 			},
@@ -806,8 +786,7 @@
 							},
 							"Retention": 0,
 							"Temporary": false,
-							"IsRewriteEnabled": false,
-							"Partitioning": {}
+							"IsRewriteEnabled": false
 						},
 						"Source": {
 							"Type": "SPARK"
@@ -858,13 +837,13 @@
 									},
 									{
 										"Name": "Host_id",
-										"Description": "unique identifier for the host of the Airbnb listing.",
+										"Description": "",
 										"OriginDataTypeName": {
-											"TypeName": "long",
+											"TypeName": "short",
 											"IsComplexType": false,
 											"IsNullable": false,
 											"Properties": {
-												"HIVE_TYPE_STRING": "long"
+												"HIVE_TYPE_STRING": "short"
 											}
 										},
 										"DeltaFormatInvalidMessages": []
@@ -1085,7 +1064,8 @@
 							},
 							"Retention": 0,
 							"Temporary": false,
-							"IsRewriteEnabled": false
+							"IsRewriteEnabled": false,
+							"Partitioning": {}
 						},
 						"Source": {
 							"Type": "SPARK"
@@ -1136,13 +1116,13 @@
 									},
 									{
 										"Name": "Host_id",
-										"Description": "unique identifier for the host of the Airbnb listing.",
+										"Description": "",
 										"OriginDataTypeName": {
-											"TypeName": "long",
+											"TypeName": "integer",
 											"IsComplexType": false,
 											"IsNullable": false,
 											"Properties": {
-												"HIVE_TYPE_STRING": "long"
+												"HIVE_TYPE_STRING": "integer"
 											}
 										},
 										"DeltaFormatInvalidMessages": []
