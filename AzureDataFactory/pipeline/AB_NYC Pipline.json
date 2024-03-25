@@ -929,7 +929,7 @@
 				"type": "Copy",
 				"dependsOn": [
 					{
-						"activity": "AB_2024 Copy Activity_copy1",
+						"activity": "2024 Transformation",
 						"dependencyConditions": [
 							"Completed"
 						]
@@ -995,7 +995,7 @@
 				"type": "Copy",
 				"dependsOn": [
 					{
-						"activity": "AB_2023 Copy Activity_copy1",
+						"activity": "2023 Power Query",
 						"dependencyConditions": [
 							"Completed"
 						]
@@ -1058,7 +1058,14 @@
 			{
 				"name": "2023 Power Query",
 				"type": "ExecuteWranglingDataflow",
-				"dependsOn": [],
+				"dependsOn": [
+					{
+						"activity": "AB_2023 Copy Activity_copy1",
+						"dependencyConditions": [
+							"Completed"
+						]
+					}
+				],
 				"policy": {
 					"timeout": "0.12:00:00",
 					"retry": 0,
@@ -1070,6 +1077,96 @@
 				"typeProperties": {
 					"dataflow": {
 						"referenceName": "2023",
+						"type": "DataFlowReference"
+					},
+					"compute": {
+						"coreCount": 8,
+						"computeType": "General"
+					},
+					"queries": [
+						{
+							"queryName": "UserQuery",
+							"dataflowSinks": [
+								{
+									"name": "UserQueryNYC2023",
+									"dataset": {
+										"referenceName": "NYC2023",
+										"type": "DatasetReference"
+									},
+									"script": "sink(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tinput(\n\t\tid as string,\n\t\tname as string,\n\t\tdescription as string,\n\t\thost_id as string,\n\t\thost_name as string,\n\t\tneighbourhood as string,\n\t\tneighbourhood_group as string,\n\t\tlatitude as string,\n\t\tlongitude as string,\n\t\tproperty_type as string,\n\t\troom_type as string,\n\t\tprice as string,\n\t\tminimum_nights as string,\n\t\tnumber_of_reviews as string,\n\t\tcalculated_host_listings_count as string,\n\t\tavailability_365 as string\n\t),\n\tumask: 0022,\n\tpreCommands: [],\n\tpostCommands: [],\n\tskipDuplicateMapInputs: true,\n\tskipDuplicateMapOutputs: true) ~> UserQueryNYC2023"
+								}
+							]
+						}
+					]
+				}
+			},
+			{
+				"name": "2024 Transformation",
+				"type": "ExecuteWranglingDataflow",
+				"dependsOn": [
+					{
+						"activity": "AB_2024 Copy Activity_copy1",
+						"dependencyConditions": [
+							"Completed"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"dataflow": {
+						"referenceName": "2024",
+						"type": "DataFlowReference"
+					},
+					"compute": {
+						"coreCount": 8,
+						"computeType": "General"
+					},
+					"queries": [
+						{
+							"queryName": "UserQuery",
+							"dataflowSinks": [
+								{
+									"name": "UserQueryNYC2024",
+									"dataset": {
+										"referenceName": "NYC2024",
+										"type": "DatasetReference"
+									},
+									"script": "sink(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tinput(\n\t\tid as string,\n\t\tname as string,\n\t\tdescription as string,\n\t\thost_id as string,\n\t\thost_name as string,\n\t\tneighbourhood as string,\n\t\tneighbourhood_group as string,\n\t\tlatitude as string,\n\t\tlongitude as string,\n\t\tproperty_type as string,\n\t\troom_type as string,\n\t\tprice as string,\n\t\tminimum_nights as string,\n\t\tnumber_of_reviews as string,\n\t\tcalculated_host_listings_count as string,\n\t\tavailability_365 as string\n\t),\n\tumask: 0022,\n\tpreCommands: [],\n\tpostCommands: [],\n\tskipDuplicateMapInputs: true,\n\tskipDuplicateMapOutputs: true) ~> UserQueryNYC2024"
+								}
+							]
+						}
+					]
+				}
+			},
+			{
+				"name": "2019 Query",
+				"type": "ExecuteWranglingDataflow",
+				"dependsOn": [
+					{
+						"activity": "AB_2019 Copy Activity_copy1",
+						"dependencyConditions": [
+							"Completed"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"dataflow": {
+						"referenceName": "2019",
 						"type": "DataFlowReference"
 					},
 					"compute": {
