@@ -44,11 +44,11 @@
 					"Name": "Host_id",
 					"Description": "",
 					"OriginDataTypeName": {
-						"TypeName": "long",
-						"IsNullable": false,
+						"TypeName": "short",
 						"IsComplexType": false,
+						"IsNullable": false,
 						"Properties": {
-							"HIVE_TYPE_STRING": "long"
+							"HIVE_TYPE_STRING": "short"
 						}
 					},
 					"DeltaFormatInvalidMessages": []
