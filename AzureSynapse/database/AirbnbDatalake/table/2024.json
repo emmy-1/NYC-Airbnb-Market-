@@ -219,26 +219,26 @@
 				"FormatType": "csv",
 				"SerializeLib": "org.apache.hadoop.hive.serde2.lazy.LazySimpleSerDe",
 				"Properties": {
-					"path": "abfss://ffs@abdatalake.dfs.core.windows.net/AirbnbDatalake/2024/2024.csv",
+					"path": "abfss://ffs@abdatalake.dfs.core.windows.net/AirbnbDatalake/2024",
 					"delimiter": ",",
 					"multiLine": "false",
 					"firstRowAsHeader": "true",
 					"serialization.format": "1",
-					"FormatTypeSetToDatabaseDefault": false,
+					"FormatTypeSetToDatabaseDefault": true,
 					"header": "true"
 				}
 			},
 			"Source": {
 				"Provider": "ADLS",
-				"Location": "abfss://ffs@abdatalake.dfs.core.windows.net/AirbnbDatalake/2024/2024.csv",
+				"Location": "abfss://ffs@abdatalake.dfs.core.windows.net/AirbnbDatalake/2024",
 				"Properties": {
 					"LinkedServiceName": "airbnbworkspace-WorkspaceDefaultStorage",
-					"LocationSetToDatabaseDefault": false
+					"LocationSetToDatabaseDefault": true
 				}
 			},
 			"Properties": {
 				"textinputformat.record.delimiter": ",",
-				"compression": "",
+				"compression": "{\"type\":\"None\",\"level\":\"optimal\"}",
 				"derivedModelAttributeInfo": "{\"attributeReferences\":{}}"
 			},
 			"Compressed": false,
