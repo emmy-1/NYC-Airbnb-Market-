@@ -978,7 +978,21 @@
 						"coreCount": 8,
 						"computeType": "General"
 					},
-					"queries": []
+					"queries": [
+						{
+							"queryName": "UserQuery",
+							"dataflowSinks": [
+								{
+									"name": "UserQueryNYC2019",
+									"dataset": {
+										"referenceName": "NYC2019",
+										"type": "DatasetReference"
+									},
+									"script": "sink(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tinput(\n\t\tid as string,\n\t\tname as string,\n\t\thost_id as string,\n\t\thost_name as string,\n\t\tneighbourhood_group as string,\n\t\tneighbourhood as string,\n\t\tlatitude as string,\n\t\tlongitude as string,\n\t\troom_type as string,\n\t\tprice as string,\n\t\tminimum_nights as string,\n\t\tnumber_of_reviews as string,\n\t\tcalculated_host_listings_count as string,\n\t\tavailability_365 as string,\n\t\t{Unnamed: 14} as string,\n\t\t{Unnamed: 15} as string,\n\t\t{Unnamed: 16} as string\n\t),\n\tumask: 0022,\n\tpreCommands: [],\n\tpostCommands: [],\n\tskipDuplicateMapInputs: true,\n\tskipDuplicateMapOutputs: true) ~> UserQueryNYC2019"
+								}
+							]
+						}
+					]
 				}
 			}
 		],
