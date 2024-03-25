@@ -1,0 +1,20 @@
+{
+	"name": "powerquery1",
+	"properties": {
+		"type": "WranglingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"name": "sparkdb2024",
+					"script": "source(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tignoreNoFilesFound: false) ~>  sparkdb2024",
+					"dataset": {
+						"referenceName": "sparkdb2024",
+						"type": "DatasetReference"
+					}
+				}
+			],
+			"script": "section Section1;\r\nshared sparkdb2024 = let AdfDoc = AzureStorage.DataLakeContents(\"https://abdatalake.dfs.core.windows.net/ffs/Transformed Datasets/2024.csvc06b556e-3f68-4d9a-aef4-b9fc3813fcb0/part-00000-12c61078-2c50-4476-9e6c-9c674c4ac48d-c000.csv\"),Csv = Csv.Document(AdfDoc, [Delimiter = \",\", Encoding = TextEncoding.Utf8, QuoteStyle = QuoteStyle.Csv]), PromotedHeaders = Table.PromoteHeaders(Csv, [PromoteAllScalars = true]) in  PromotedHeaders;\r\nshared UserQuery = let Source = #\"sparkdb2024\",\r\n  #\"Extracted first characters\" = Table.TransformColumns(Source, {{\"id\", each Text.Start(_, 4), type text}}),\r\n  #\"Replaced value\" = Table.ReplaceValue(#\"Extracted first characters\", \"\"\"\", \"\", Replacer.ReplaceText, {\"id\", \"name\", \"description\", \"host_id\", \"host_name\", \"neighbourhood\", \"neighbourhood_group\", \"latitude\", \"longitude\", \"property_type\", \"room_type\", \"price\", \"minimum_nights\", \"number_of_reviews\", \"calculated_host_listings_count\", \"availability_365\"}),\r\n  #\"Changed column type\" = Table.TransformColumnTypes(#\"Replaced value\", {{\"id\", Int64.Type}, {\"name\", type text}, {\"description\", type text}, {\"host_id\", Int64.Type}, {\"host_name\", type text}, {\"neighbourhood\", type text}, {\"neighbourhood_group\", type text}, {\"latitude\", type number}, {\"longitude\", type number}, {\"property_type\", type text}, {\"room_type\", type text}, {\"price\", Int64.Type}, {\"minimum_nights\", Int64.Type}, {\"number_of_reviews\", Int64.Type}, {\"calculated_host_listings_count\", Int64.Type}, {\"availability_365\", Int64.Type}}),\r\n  #\"Extracted first characters 1\" = Table.TransformColumns(#\"Changed column type\", {{\"host_id\", each Text.Start(Text.From(_), 4), type text}}),\r\n  #\"Changed column type 1\" = Table.TransformColumnTypes(#\"Extracted first characters 1\", {{\"host_id\", Int64.Type}}) in #\"Changed column type 1\";\r\n",
+			"documentLocale": "en-us"
+		}
+	}
+}
