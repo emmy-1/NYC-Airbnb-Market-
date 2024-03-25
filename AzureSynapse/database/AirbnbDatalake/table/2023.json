@@ -44,12 +44,11 @@
 					"Name": "Host_id",
 					"Description": "unique identifier for the host of the Airbnb listing.",
 					"OriginDataTypeName": {
-						"TypeName": "string",
+						"TypeName": "long",
 						"IsComplexType": false,
 						"IsNullable": false,
-						"Length": 256,
 						"Properties": {
-							"HIVE_TYPE_STRING": "string"
+							"HIVE_TYPE_STRING": "long"
 						}
 					},
 					"DeltaFormatInvalidMessages": []
@@ -61,7 +60,7 @@
 						"TypeName": "string",
 						"IsComplexType": false,
 						"IsNullable": true,
-						"Length": 400,
+						"Length": 256,
 						"Properties": {
 							"HIVE_TYPE_STRING": "string"
 						}
@@ -100,12 +99,11 @@
 					"Name": "Latitude",
 					"Description": "geographic coordinates of the listing.",
 					"OriginDataTypeName": {
-						"TypeName": "string",
+						"TypeName": "float",
 						"IsComplexType": false,
 						"IsNullable": true,
-						"Length": 256,
 						"Properties": {
-							"HIVE_TYPE_STRING": "string"
+							"HIVE_TYPE_STRING": "float"
 						}
 					},
 					"DeltaFormatInvalidMessages": []
@@ -114,12 +112,11 @@
 					"Name": "Longitude",
 					"Description": "geographic coordinates of the listing.",
 					"OriginDataTypeName": {
-						"TypeName": "string",
+						"TypeName": "float",
 						"IsComplexType": false,
 						"IsNullable": true,
-						"Length": 256,
 						"Properties": {
-							"HIVE_TYPE_STRING": "string"
+							"HIVE_TYPE_STRING": "float"
 						}
 					},
 					"DeltaFormatInvalidMessages": []
