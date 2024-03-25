@@ -4,7 +4,7 @@
 		"nbformat": 4,
 		"nbformat_minor": 2,
 		"bigDataPool": {
-			"referenceName": "sparknew",
+			"referenceName": "newspaarkpool",
 			"type": "BigDataPoolReference"
 		},
 		"sessionProperties": {
@@ -17,7 +17,7 @@
 				"spark.dynamicAllocation.enabled": "false",
 				"spark.dynamicAllocation.minExecutors": "2",
 				"spark.dynamicAllocation.maxExecutors": "2",
-				"spark.autotune.trackingId": "40d60df4-cac6-43ac-89e8-7560df9f6c5e"
+				"spark.autotune.trackingId": "796de924-115c-45cc-9928-05f263f92761"
 			}
 		},
 		"metadata": {
@@ -31,16 +31,16 @@
 				"name": "python"
 			},
 			"a365ComputeOptions": {
-				"id": "/subscriptions/2807cfaa-f940-4555-b623-1800da5ab957/resourceGroups/NewYorkAirbnb/providers/Microsoft.Synapse/workspaces/airbnbworkspace/bigDataPools/sparknew",
-				"name": "sparknew",
+				"id": "/subscriptions/2807cfaa-f940-4555-b623-1800da5ab957/resourceGroups/NewYorkAirbnb/providers/Microsoft.Synapse/workspaces/airbnbworkspace/bigDataPools/newspaarkpool",
+				"name": "newspaarkpool",
 				"type": "Spark",
-				"endpoint": "https://airbnbworkspace.dev.azuresynapse.net/livyApi/versions/2019-11-01-preview/sparkPools/sparknew",
+				"endpoint": "https://airbnbworkspace.dev.azuresynapse.net/livyApi/versions/2019-11-01-preview/sparkPools/newspaarkpool",
 				"auth": {
 					"type": "AAD",
 					"authResource": "https://dev.azuresynapse.net"
 				},
 				"sparkVersion": "3.3",
-				"nodeCount": 10,
+				"nodeCount": 3,
 				"cores": 4,
 				"memory": 28,
 				"automaticScaleJobs": false
@@ -114,9 +114,9 @@
 					"# Load datasets\r\n",
 					"display(NeyWork2024.limit(10))\r\n",
 					"display(db_2023.limit(10))\r\n",
-					"display(db_2019.limit(10480))"
+					"display(db_2019.limit(10))"
 				],
-				"execution_count": 2
+				"execution_count": 1
 			},
 			{
 				"cell_type": "markdown",
@@ -154,7 +154,7 @@
 					"CreateSqltb(db_2023, \"Airbnb2023n\")\r\n",
 					"CreateSqltb(db_2019, \"Airbnb2019n\")"
 				],
-				"execution_count": 3
+				"execution_count": 2
 			},
 			{
 				"cell_type": "markdown",
@@ -249,7 +249,7 @@
 					}
 				},
 				"source": [
-					"# Select Only 5 major neigbourhood Groups 2019"
+					"# Select Only 5 major neigbourhood Groups 2019 and drop non-numerical ID"
 				]
 			},
 			{
@@ -263,14 +263,20 @@
 						"transient": {
 							"deleting": false
 						}
-					}
+					},
+					"collapsed": false
 				},
 				"source": [
 					"neighbourhoodclean = spark.sql(\" Select * from Airbnb2019n WHERE neighbourhood_group IN('Queens','Brooklyn','Staten Island','Manhattan','Bronx')\")\r\n",
-					"database19 = spark.sql(\"SELECT * FROM Airbnb2019New WHERE id != 'Astoria'\")\r\n",
-					"CreateSqltb(database19, \"Airbnb2019New\")"
+					"# Show id which do not have numeric datasets.\r\n",
+					"database19 = neighbourhoodclean.filter(~col('id').cast('int').isNotNull())\r\n",
+					"\r\n",
+					"# filter to return only columns with numerical id\r\n",
+					"Database2019 = neighbourhoodclean.filter(col('id').cast('int').isNotNull())\r\n",
+					"\r\n",
+					"CreateSqltb(Database2019, \"Airbnb2019New\")"
 				],
-				"execution_count": 26
+				"execution_count": 12
 			},
 			{
 				"cell_type": "markdown",
@@ -345,7 +351,7 @@
 				"source": [
 					"write_dataset(distinct, '2024.csv',runId)\r\n",
 					"write_dataset(Roomclean, '2023.csv',runId)\r\n",
-					"write_dataset(database19, '2019.csv',runId)\r\n",
+					"write_dataset(Database2019, '2019.csv',runId)\r\n",
 					""
 				],
 				"execution_count": 8
