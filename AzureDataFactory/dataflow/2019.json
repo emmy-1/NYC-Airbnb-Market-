@@ -6,7 +6,7 @@
 			"sources": [
 				{
 					"name": "Sparkdb2019",
-					"script": "source(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tignoreNoFilesFound: false) ~>  Sparkdb2019",
+					"script": "source(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tignoreNoFilesFound: false) ~> Sparkdb2019",
 					"dataset": {
 						"referenceName": "Sparkdb2019",
 						"type": "DatasetReference"
