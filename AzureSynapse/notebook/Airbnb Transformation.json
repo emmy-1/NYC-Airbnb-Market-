@@ -17,7 +17,7 @@
 				"spark.dynamicAllocation.enabled": "false",
 				"spark.dynamicAllocation.minExecutors": "2",
 				"spark.dynamicAllocation.maxExecutors": "2",
-				"spark.autotune.trackingId": "796de924-115c-45cc-9928-05f263f92761"
+				"spark.autotune.trackingId": "54953b2a-13e5-470e-968c-78848c9350c6"
 			}
 		},
 		"metadata": {
@@ -201,7 +201,7 @@
 				},
 				"source": [
 					"distinct = spark.sql(\"SELECT * FROM Airbnb2024n WHERE neighbourhood_group IN ('Manhattan', 'Bronx', 'Brooklyn', 'Staten Island', 'Queens')\")\r\n",
-					"CreateSqltb(distinct, \"Airbnb2024new\")\r\n",
+					"#CreateSqltb(distinct, \"Airbnb2024new\")\r\n",
 					""
 				],
 				"execution_count": 3
@@ -273,10 +273,9 @@
 					"\r\n",
 					"# filter to return only columns with numerical id\r\n",
 					"Database2019 = neighbourhoodclean.filter(col('id').cast('int').isNotNull())\r\n",
-					"\r\n",
-					"CreateSqltb(Database2019, \"Airbnb2019New\")"
+					"#CreateSqltb(Database2019, \"Airbnb2019New\")"
 				],
-				"execution_count": 12
+				"execution_count": 5
 			},
 			{
 				"cell_type": "markdown",
@@ -355,24 +354,6 @@
 					""
 				],
 				"execution_count": 8
-			},
-			{
-				"cell_type": "code",
-				"metadata": {
-					"jupyter": {
-						"source_hidden": false,
-						"outputs_hidden": false
-					},
-					"nteract": {
-						"transient": {
-							"deleting": false
-						}
-					}
-				},
-				"source": [
-					""
-				],
-				"execution_count": null
 			}
 		]
 	}
