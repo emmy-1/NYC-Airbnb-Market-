@@ -1,0 +1,17 @@
+{
+	"name": "2023 Analysis",
+	"properties": {
+		"content": {
+			"query": "SELECT  [id]\n,[name]\n,[host_id]\n,[host_name]\n,[neighbourhood]\n,[neighbourhood_group]\n,[latitude]\n,[longitude]\n,[property_type]\n,[room_type]\n,[price]\n,[minimum_nights]\n,[number_of_reviews]\n,[calculated_host_listings_count]\n,[availability_365]\n FROM [AirbnbDatalake].[dbo].[2023]",
+			"metadata": {
+				"language": "sql"
+			},
+			"currentConnection": {
+				"databaseName": "AirbnbDatalake",
+				"poolName": "Built-in"
+			},
+			"resultLimit": -1
+		},
+		"type": "SqlQuery"
+	}
+}
