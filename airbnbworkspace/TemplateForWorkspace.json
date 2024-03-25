@@ -786,8 +786,7 @@
 							},
 							"Retention": 0,
 							"Temporary": false,
-							"IsRewriteEnabled": false,
-							"Partitioning": {}
+							"IsRewriteEnabled": false
 						},
 						"Source": {
 							"Type": "SPARK"
@@ -832,19 +831,6 @@
 											"Length": 256,
 											"Properties": {
 												"HIVE_TYPE_STRING": "string"
-											}
-										},
-										"DeltaFormatInvalidMessages": []
-									},
-									{
-										"Name": "Host_id",
-										"Description": "",
-										"OriginDataTypeName": {
-											"TypeName": "long",
-											"IsComplexType": false,
-											"IsNullable": false,
-											"Properties": {
-												"HIVE_TYPE_STRING": "long"
 											}
 										},
 										"DeltaFormatInvalidMessages": []
@@ -1060,9 +1046,8 @@
 							"Properties": {
 								"Description": "",
 								"DisplayFolderInfo": "{\"name\":\"Others\",\"colorCode\":\"\"}",
-								"PrimaryKeys": "id,Host_id",
-								"spark.sql.sources.provider": "csv",
-								"sql:IsAppendOnly": false
+								"PrimaryKeys": "id",
+								"spark.sql.sources.provider": "csv"
 							},
 							"Retention": 0,
 							"Temporary": false,
