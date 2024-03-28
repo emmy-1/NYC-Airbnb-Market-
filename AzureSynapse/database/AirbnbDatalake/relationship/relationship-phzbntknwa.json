@@ -1,0 +1,23 @@
+{
+	"name": "relationship-phzbntknwa",
+	"properties": {
+		"Name": "relationship-phzbntknwa",
+		"EntityType": "RELATIONSHIP",
+		"Namespace": {
+			"DatabaseName": "AirbnbDatalake"
+		},
+		"Origin": {
+			"Type": "SPARK"
+		},
+		"FromTableName": "2019",
+		"ToTableName": "2024",
+		"ColumnRelationshipInformations": [
+			{
+				"FromColumnName": "Host_id",
+				"ToColumnName": "host_id"
+			}
+		],
+		"RelationshipType": 0
+	},
+	"type": "RELATIONSHIP"
+}
